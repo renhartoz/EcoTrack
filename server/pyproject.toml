@@ -10,7 +10,7 @@ select = ["E", "F", "I", "W"]
 ignore = []
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings.dev"
+DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py", "*_test.py"]
 testpaths = ["accounts/tests", "core/tests"]
 addopts = "--strict-markers"
