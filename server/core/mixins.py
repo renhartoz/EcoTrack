@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
+
 class BankScopedMixin:
     def get_bank(self):
         user = getattr(self.request, "user", None)

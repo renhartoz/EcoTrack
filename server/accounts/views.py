@@ -12,6 +12,7 @@ from accounts.models import User
 from accounts.serializers import LoginSerializer, UserSummarySerializer
 from core.throttling import LoginRateThrottle
 
+
 def set_auth_cookies(response, access_token, refresh_token):
     response.set_cookie(
         key="access_token",
@@ -32,6 +33,7 @@ def set_auth_cookies(response, access_token, refresh_token):
         path="/api/auth/",
     )
 
+
 def clear_auth_cookies(response):
     response.delete_cookie(
         key="access_token",
@@ -44,6 +46,7 @@ def clear_auth_cookies(response):
         samesite=settings.JWT_COOKIE_SAMESITE,
     )
 
+
 def set_csrf_cookie(request, response):
     csrf_token = get_token(request)
     response.set_cookie(
@@ -54,6 +57,7 @@ def set_csrf_cookie(request, response):
         secure=settings.CSRF_COOKIE_SECURE,
         path="/",
     )
+
 
 class LoginView(APIView):
     authentication_classes = []
@@ -84,6 +88,7 @@ class LoginView(APIView):
         set_auth_cookies(response, access, str(refresh))
         set_csrf_cookie(request, response)
         return response
+
 
 class RefreshView(APIView):
     authentication_classes = []
@@ -116,6 +121,7 @@ class RefreshView(APIView):
                 code="unauthenticated",
             )
 
+
 class LogoutView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
@@ -134,6 +140,7 @@ class LogoutView(APIView):
         response = Response({"status": "ok"}, status=status.HTTP_200_OK)
         clear_auth_cookies(response)
         return response
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]

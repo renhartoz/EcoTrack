@@ -2,9 +2,11 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
 
 def test_unknown_api_url_returns_json_error_envelope_404(api_client):
     response = api_client.get("/api/unknown-endpoint-404/")
@@ -16,6 +18,7 @@ def test_unknown_api_url_returns_json_error_envelope_404(api_client):
             "details": {},
         }
     }
+
 
 @pytest.mark.django_db
 def test_validation_error_returns_json_error_envelope_400(api_client):

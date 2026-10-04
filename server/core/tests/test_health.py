@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -7,9 +8,11 @@ from rest_framework_simplejwt.tokens import AccessToken
 from accounts.models import User
 from core.models import BankSampah
 
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
 
 @pytest.fixture
 def operator_user(db):
@@ -20,10 +23,12 @@ def operator_user(db):
         bank_sampah=bank,
     )
 
+
 def test_health_check_returns_200_ok(api_client):
     response = api_client.get("/api/health/")
     assert response.status_code == status.HTTP_200_OK
     assert response.data == {"status": "ok"}
+
 
 @pytest.mark.django_db
 def test_health_check_with_stale_access_cookie_succeeds(api_client, operator_user):

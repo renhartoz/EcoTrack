@@ -1,10 +1,12 @@
 from io import StringIO
+
 import pytest
 from django.core.management import call_command
 from django.core.management.base import CommandError
 
 from accounts.models import User
 from core.models import BankSampah
+
 
 @pytest.mark.django_db
 def test_create_operator_creates_bank_and_user():
@@ -24,6 +26,7 @@ def test_create_operator_creates_bank_and_user():
     assert user.bank_sampah.name == "Bank Sukses"
     assert user.bank_sampah.city == "Sleman"
     assert "Successfully created operator" in out.getvalue()
+
 
 @pytest.mark.django_db
 def test_create_operator_duplicate_username_fails():

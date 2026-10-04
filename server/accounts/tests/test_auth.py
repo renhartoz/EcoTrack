@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 import pytest
 from django.core.cache import cache
 from django.middleware.csrf import _get_new_csrf_string, _mask_cipher_secret
@@ -9,11 +10,13 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from accounts.models import User
 from core.models import BankSampah
 
+
 @pytest.fixture(autouse=True)
 def clear_db_cache():
     cache.clear()
     yield
     cache.clear()
+
 
 @pytest.fixture
 def bank():
@@ -22,6 +25,7 @@ def bank():
         city="Yogyakarta",
         is_demo=False,
     )
+
 
 @pytest.fixture
 def operator_user(bank):
@@ -32,9 +36,11 @@ def operator_user(bank):
     )
     return user
 
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
 
 def setup_csrf(client):
     secret = _get_new_csrf_string()
@@ -42,6 +48,7 @@ def setup_csrf(client):
     masked_header = _mask_cipher_secret(secret)
     client.cookies["csrftoken"] = masked_cookie
     return masked_header
+
 
 @pytest.mark.django_db
 def test_login_success_sets_httponly_and_csrf_cookies(api_client, operator_user):
@@ -66,6 +73,7 @@ def test_login_success_sets_httponly_and_csrf_cookies(api_client, operator_user)
     assert "csrftoken" in response.cookies
     assert response.cookies["csrftoken"]["httponly"] is False
 
+
 @pytest.mark.django_db
 def test_login_invalid_credentials_returns_401_unauthenticated(api_client, operator_user):
     payload = {"username": "operator_test", "password": "WrongPassword"}
@@ -73,6 +81,7 @@ def test_login_invalid_credentials_returns_401_unauthenticated(api_client, opera
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.data["error"]["code"] == "UNAUTHENTICATED"
+
 
 @pytest.mark.django_db
 def test_login_with_stale_access_cookie_succeeds(api_client, operator_user):
@@ -85,6 +94,7 @@ def test_login_with_stale_access_cookie_succeeds(api_client, operator_user):
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data["user"]["username"] == "operator_test"
+
 
 @pytest.mark.django_db
 def test_refresh_success_rotates_and_blacklists_old(api_client, operator_user):
@@ -114,6 +124,7 @@ def test_refresh_success_rotates_and_blacklists_old(api_client, operator_user):
     assert second_response.status_code == status.HTTP_401_UNAUTHORIZED
     assert second_response.data["error"]["code"] == "UNAUTHENTICATED"
 
+
 @pytest.mark.django_db
 def test_refresh_succeeds_with_expired_access_cookie(api_client, operator_user):
     expired_access = AccessToken.for_user(operator_user)
@@ -134,6 +145,7 @@ def test_refresh_succeeds_with_expired_access_cookie(api_client, operator_user):
     assert response.status_code == status.HTTP_200_OK
     assert response.data == {"status": "ok"}
 
+
 @pytest.mark.django_db
 def test_refresh_without_csrf_returns_403_csrf_failed(api_client, operator_user):
     valid_refresh = RefreshToken.for_user(operator_user)
@@ -144,6 +156,7 @@ def test_refresh_without_csrf_returns_403_csrf_failed(api_client, operator_user)
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
     assert response.data["error"]["code"] == "CSRF_FAILED"
+
 
 @pytest.mark.django_db
 def test_logout_blacklists_refresh_token_and_clears_cookies(api_client, operator_user):
@@ -175,6 +188,7 @@ def test_logout_blacklists_refresh_token_and_clears_cookies(api_client, operator
     )
     assert refresh_attempt.status_code == status.HTTP_401_UNAUTHORIZED
 
+
 @pytest.mark.django_db
 def test_logout_with_expired_access_cookie_succeeds(api_client, operator_user):
     expired_access = AccessToken.for_user(operator_user)
@@ -196,6 +210,7 @@ def test_logout_with_expired_access_cookie_succeeds(api_client, operator_user):
     assert response.cookies["access_token"].value == ""
     assert response.cookies["refresh_token"].value == ""
 
+
 @pytest.mark.django_db
 def test_logout_without_csrf_returns_403_csrf_failed(api_client, operator_user):
     refresh = RefreshToken.for_user(operator_user)
@@ -206,6 +221,7 @@ def test_logout_without_csrf_returns_403_csrf_failed(api_client, operator_user):
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
     assert response.data["error"]["code"] == "CSRF_FAILED"
+
 
 @pytest.mark.django_db
 def test_me_authenticated_returns_user_and_sets_csrf_cookie(api_client, operator_user):
@@ -219,6 +235,7 @@ def test_me_authenticated_returns_user_and_sets_csrf_cookie(api_client, operator
     assert response.data["bank_sampah"]["name"] == "Bank Sampah Uji"
     assert "csrftoken" in response.cookies
 
+
 @pytest.mark.django_db
 def test_me_unauthenticated_returns_401_unauthenticated_not_403(api_client):
     response = api_client.get("/api/auth/me/")
@@ -226,8 +243,11 @@ def test_me_unauthenticated_returns_401_unauthenticated_not_403(api_client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.data["error"]["code"] == "UNAUTHENTICATED"
 
+
 @pytest.mark.django_db
-def test_unsafe_method_with_access_cookie_without_csrf_returns_403_csrf_failed(api_client, operator_user):
+def test_unsafe_method_with_access_cookie_without_csrf_returns_403_csrf_failed(
+    api_client, operator_user
+):
     access = AccessToken.for_user(operator_user)
     api_client.cookies["access_token"] = str(access)
     api_client.cookies["csrftoken"] = _mask_cipher_secret(_get_new_csrf_string())

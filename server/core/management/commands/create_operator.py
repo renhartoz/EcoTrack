@@ -1,9 +1,12 @@
 import getpass
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
+
 from core.models import BankSampah
 
 User = get_user_model()
+
 
 class Command(BaseCommand):
     help = "Create an operator user linked to a BankSampah."

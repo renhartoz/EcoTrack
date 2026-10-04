@@ -3,6 +3,7 @@ from rest_framework import exceptions, status
 from rest_framework.response import Response
 from rest_framework.views import exception_handler as drf_exception_handler
 
+
 def custom_exception_handler(exc, context):
     response = drf_exception_handler(exc, context)
 
@@ -62,12 +63,13 @@ def custom_exception_handler(exc, context):
 
     response.data = {
         "error": {
-          "code": error_code,
-          "message": message,
-          "details": details,
+            "code": error_code,
+            "message": message,
+            "details": details,
         }
     }
     return response
+
 
 def handler404(request, exception=None):
     return JsonResponse(
@@ -80,6 +82,7 @@ def handler404(request, exception=None):
         },
         status=404,
     )
+
 
 def handler500(request):
     return JsonResponse(

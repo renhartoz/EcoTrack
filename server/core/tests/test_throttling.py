@@ -6,11 +6,13 @@ from rest_framework.test import APIClient
 from accounts.models import User
 from core.models import BankSampah
 
+
 @pytest.fixture(autouse=True)
 def clear_cache():
     cache.clear()
     yield
     cache.clear()
+
 
 @pytest.fixture
 def operator(db):
@@ -20,6 +22,7 @@ def operator(db):
         password="ValidPassword123",
         bank_sampah=bank,
     )
+
 
 @pytest.mark.django_db
 def test_login_throttling_keyed_by_username(operator):

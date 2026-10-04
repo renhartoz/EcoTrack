@@ -7,15 +7,18 @@ from core.mixins import BankScopedMixin
 from core.models import BankSampah, Nasabah
 from core.permissions import IsBankOperator
 
+
 class DummyView(BankScopedMixin):
     def __init__(self, request):
         self.request = request
+
 
 @pytest.fixture
 def banks(db):
     bank_a = BankSampah.objects.create(name="Bank A", is_demo=False)
     bank_b = BankSampah.objects.create(name="Bank B", is_demo=False)
     return bank_a, bank_b
+
 
 @pytest.fixture
 def users_and_nasabah(db, banks):
@@ -47,6 +50,7 @@ def users_and_nasabah(db, banks):
     )
     return user_a, user_b, user_no_bank, nasabah_a, nasabah_b
 
+
 @pytest.mark.django_db
 def test_bank_scoped_mixin_access_own_bank(users_and_nasabah):
     user_a, _, _, nasabah_a, _ = users_and_nasabah
@@ -57,6 +61,7 @@ def test_bank_scoped_mixin_access_own_bank(users_and_nasabah):
     view = DummyView(request)
     obj = view.get_scoped_object_or_404(Nasabah, pk=nasabah_a.pk)
     assert obj == nasabah_a
+
 
 @pytest.mark.django_db
 def test_bank_scoped_mixin_cross_bank_access_raises_404(users_and_nasabah):
@@ -69,6 +74,7 @@ def test_bank_scoped_mixin_cross_bank_access_raises_404(users_and_nasabah):
     with pytest.raises(Http404):
         view.get_scoped_object_or_404(Nasabah, pk=nasabah_b.pk)
 
+
 @pytest.mark.django_db
 def test_bank_scoped_mixin_without_bank_raises_404(users_and_nasabah):
     _, _, user_no_bank, nasabah_a, _ = users_and_nasabah
@@ -79,6 +85,7 @@ def test_bank_scoped_mixin_without_bank_raises_404(users_and_nasabah):
     view = DummyView(request)
     with pytest.raises(Http404):
         view.get_scoped_object_or_404(Nasabah, pk=nasabah_a.pk)
+
 
 @pytest.mark.django_db
 def test_is_bank_operator_permission(users_and_nasabah):
