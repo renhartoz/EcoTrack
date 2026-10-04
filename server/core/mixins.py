@@ -14,8 +14,6 @@ class BankScopedMixin:
         if bank is None:
             raise Http404
         queryset = (
-            model_or_queryset
-            if hasattr(model_or_queryset, "filter")
-            else model_or_queryset.objects
+            model_or_queryset if hasattr(model_or_queryset, "filter") else model_or_queryset.objects
         )
         return get_object_or_404(queryset.filter(bank_sampah=bank), **kwargs)
