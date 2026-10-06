@@ -16,6 +16,7 @@ def enforce_csrf(request):
         raw_request._dont_enforce_csrf_checks = False
 
     try:
+
         def dummy_get_response(req):
             return None
 
