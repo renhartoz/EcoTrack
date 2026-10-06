@@ -15,5 +15,5 @@ ignore = []
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py", "*_test.py"]
-testpaths = ["accounts/tests", "core/tests"]
-addopts = "--strict-markers"
+testpaths = ["accounts/tests", "core/tests", "ingestion/tests"]
+addopts = "--strict-markers --reuse-db"

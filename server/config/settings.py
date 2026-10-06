@@ -31,6 +31,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "core",
     "accounts",
+    "deposits",
+    "ingestion",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -122,3 +124,19 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+EXTRACTION_STRATEGY = env("EXTRACTION_STRATEGY", default="vision")
+GROQ_API_KEY = env("GROQ_API_KEY", default="")
+GROQ_VISION_MODEL = env("GROQ_VISION_MODEL", default="qwen/qwen3.8-27b")
+GROQ_TEXT_MODEL = env("GROQ_TEXT_MODEL", default="qwen/qwen3.8-27b")
+GROQ_STRUCTURED_MODE = env("GROQ_STRUCTURED_MODE", default="json_schema_strict")
+GROQ_MAX_COMPLETION_TOKENS = env.int("GROQ_MAX_COMPLETION_TOKENS", default=3000)
+GROQ_MAX_RETRY_WAIT_S = env.int("GROQ_MAX_RETRY_WAIT_S", default=20)
+GROQ_REASONING_EFFORT = env("GROQ_REASONING_EFFORT", default=None)
+OCR_SPACE_API_KEY = env("OCR_SPACE_API_KEY", default="")
+OCR_SPACE_ENGINE = env.int("OCR_SPACE_ENGINE", default=3)
+OCR_SPACE_TIMEOUT_S = env.int("OCR_SPACE_TIMEOUT_S", default=30)
+LLM_MODE = env("LLM_MODE", default="live")
+LLM_TIMEOUT_S = env.int("LLM_TIMEOUT_S", default=60)
+MAX_UPLOAD_MB = env.int("MAX_UPLOAD_MB", default=4)
+UPLOAD_THROTTLE = env("UPLOAD_THROTTLE", default="30/hour")
