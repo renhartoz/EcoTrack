@@ -71,7 +71,7 @@ def test_login_success_sets_httponly_and_csrf_cookies(api_client, operator_user)
     assert response.cookies["refresh_token"]["path"] == "/api/auth/"
 
     assert "csrftoken" in response.cookies
-    assert response.cookies["csrftoken"]["httponly"] is False
+    assert not response.cookies["csrftoken"]["httponly"]
 
 
 @pytest.mark.django_db
@@ -115,6 +115,7 @@ def test_refresh_success_rotates_and_blacklists_old(api_client, operator_user):
     assert "refresh_token" in response.cookies
     assert response.cookies["refresh_token"].value != str(old_refresh)
 
+    api_client.cookies["refresh_token"] = str(old_refresh)
     second_response = api_client.post(
         "/api/auth/refresh/",
         {},

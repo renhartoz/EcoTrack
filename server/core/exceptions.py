@@ -20,7 +20,12 @@ def custom_exception_handler(exc, context):
     message = "An error occurred."
     details = {}
 
-    if status_code == status.HTTP_401_UNAUTHORIZED:
+    if isinstance(exc, (exceptions.AuthenticationFailed, exceptions.NotAuthenticated)):
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        status_code = status.HTTP_401_UNAUTHORIZED
+        error_code = "UNAUTHENTICATED"
+        message = "Authentication credentials were not provided or are invalid."
+    elif status_code == status.HTTP_401_UNAUTHORIZED:
         error_code = "UNAUTHENTICATED"
         message = "Authentication credentials were not provided or are invalid."
     elif status_code == status.HTTP_403_FORBIDDEN:

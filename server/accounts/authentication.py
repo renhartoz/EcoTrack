@@ -10,17 +10,26 @@ class CSRFCheck(CsrfViewMiddleware):
 
 
 def enforce_csrf(request):
-    def dummy_get_response(req):
-        return None
+    raw_request = getattr(request, "_request", request)
+    dont_enforce = getattr(raw_request, "_dont_enforce_csrf_checks", False)
+    if dont_enforce:
+        raw_request._dont_enforce_csrf_checks = False
 
-    check = CSRFCheck(dummy_get_response)
-    check.process_request(request)
-    reason = check.process_view(request, None, (), {})
-    if reason:
-        raise exceptions.PermissionDenied(
-            f"CSRF Failed: {reason}",
-            code="csrf_failed",
-        )
+    try:
+        def dummy_get_response(req):
+            return None
+
+        check = CSRFCheck(dummy_get_response)
+        check.process_request(raw_request)
+        reason = check.process_view(raw_request, None, (), {})
+        if reason:
+            raise exceptions.PermissionDenied(
+                f"CSRF Failed: {reason}",
+                code="csrf_failed",
+            )
+    finally:
+        if dont_enforce:
+            raw_request._dont_enforce_csrf_checks = dont_enforce
 
 
 class CookieJWTAuthentication(JWTAuthentication):
