@@ -1,0 +1,21 @@
+{
+  "id": "chatcmpl-test-valid",
+  "object": "chat.completion",
+  "created": 1728200000,
+  "model": "qwen/qwen3.8-27b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"page\":{\"bank_name_raw\":null,\"page_date_raw\":\"Sep 2026\",\"has_total_row\":false,\"total_raw\":null},\"rows\":[{\"row_index\":0,\"tanggal_raw\":\"12/9\",\"date_is_repeat\":false,\"nama_raw\":\"Bu Siti\",\"jenis_raw\":\"botol\",\"berat_raw\":\"2,5\",\"satuan_raw\":\"kg\",\"evidence_text\":\"12/9 Bu Siti botol 2,5 kg\",\"row_confidence\":0.85,\"y_min\":0.31,\"y_max\":0.36,\"source_lines\":null},{\"row_index\":1,\"tanggal_raw\":\"12/9\",\"date_is_repeat\":false,\"nama_raw\":\"Pak Joko\",\"jenis_raw\":\"kardus\",\"berat_raw\":\"5\",\"satuan_raw\":\"kg\",\"evidence_text\":\"12/9 Pak Joko kardus 5 kg\",\"row_confidence\":0.9,\"y_min\":0.38,\"y_max\":0.44,\"source_lines\":null}]}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1250,
+    "completion_tokens": 180,
+    "total_tokens": 1430
+  }
+}

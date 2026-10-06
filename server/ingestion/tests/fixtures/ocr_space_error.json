@@ -1,0 +1,8 @@
+{
+  "ParsedResults": null,
+  "OCRExitCode": 99,
+  "IsErroredOnProcessing": true,
+  "ErrorMessage": ["File failed to process", "Invalid input format"],
+  "ErrorDetails": "Unable to recognize text",
+  "ProcessingTimeInMilliseconds": "120"
+}

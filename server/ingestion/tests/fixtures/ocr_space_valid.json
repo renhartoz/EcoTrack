@@ -1,0 +1,117 @@
+{
+  "ParsedResults": [
+    {
+      "TextOverlay": {
+        "Lines": [
+          {
+            "LineText": "12/9 Bu Siti botol 2,5 kg",
+            "Words": [
+              {
+                "WordText": "12/9",
+                "Left": 50,
+                "Top": 100,
+                "Height": 20,
+                "Width": 40
+              },
+              {
+                "WordText": "Bu",
+                "Left": 100,
+                "Top": 100,
+                "Height": 20,
+                "Width": 30
+              },
+              {
+                "WordText": "Siti",
+                "Left": 140,
+                "Top": 100,
+                "Height": 20,
+                "Width": 40
+              },
+              {
+                "WordText": "botol",
+                "Left": 190,
+                "Top": 100,
+                "Height": 20,
+                "Width": 50
+              },
+              {
+                "WordText": "2,5",
+                "Left": 250,
+                "Top": 100,
+                "Height": 20,
+                "Width": 30
+              },
+              {
+                "WordText": "kg",
+                "Left": 290,
+                "Top": 100,
+                "Height": 20,
+                "Width": 20
+              }
+            ],
+            "MaxHeight": 20,
+            "MinTop": 100
+          },
+          {
+            "LineText": "12/9 Pak Joko kardus 5 kg",
+            "Words": [
+              {
+                "WordText": "12/9",
+                "Left": 50,
+                "Top": 140,
+                "Height": 20,
+                "Width": 40
+              },
+              {
+                "WordText": "Pak",
+                "Left": 100,
+                "Top": 140,
+                "Height": 20,
+                "Width": 35
+              },
+              {
+                "WordText": "Joko",
+                "Left": 145,
+                "Top": 140,
+                "Height": 20,
+                "Width": 45
+              },
+              {
+                "WordText": "kardus",
+                "Left": 200,
+                "Top": 140,
+                "Height": 20,
+                "Width": 60
+              },
+              {
+                "WordText": "5",
+                "Left": 270,
+                "Top": 140,
+                "Height": 20,
+                "Width": 15
+              },
+              {
+                "WordText": "kg",
+                "Left": 295,
+                "Top": 140,
+                "Height": 20,
+                "Width": 20
+              }
+            ],
+            "MaxHeight": 20,
+            "MinTop": 140
+          }
+        ],
+        "HasOverlay": true,
+        "Message": null
+      },
+      "FileParseExitCode": 1,
+      "ParsedText": "12/9 Bu Siti botol 2,5 kg\r\n12/9 Pak Joko kardus 5 kg\r\n",
+      "ErrorMessage": null,
+      "ErrorDetails": null
+    }
+  ],
+  "OCRExitCode": 1,
+  "IsErroredOnProcessing": false,
+  "ProcessingTimeInMilliseconds": "512"
+}

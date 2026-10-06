@@ -1,0 +1,21 @@
+{
+  "id": "chatcmpl-test-invalid",
+  "object": "chat.completion",
+  "created": 1728200000,
+  "model": "qwen/qwen3.8-27b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"page\":{\"bank_name_raw\":null},\"rows\":\"invalid-not-a-list\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1250,
+    "completion_tokens": 50,
+    "total_tokens": 1300
+  }
+}
