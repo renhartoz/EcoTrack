@@ -71,8 +71,8 @@ def test_upload_image_success(test_setup):
     assert data["source_type"] == "image"
     assert data["status"] == "ready"
     assert data["source_sha256"] == source_hash
-    assert len(data["rows"]) == 2
-    assert data["counts"]["pending"] == 2
+    assert len(data["rows"]) == 10
+    assert data["counts"]["pending"] == 10
 
 
 def test_upload_image_invalid_hash(test_setup):
@@ -112,7 +112,7 @@ def test_upload_text_success(test_setup):
     data = resp.json()
     assert data["source_type"] == "text"
     assert data["status"] == "ready"
-    assert len(data["rows"]) == 2
+    assert len(data["rows"]) == 10
 
 
 def test_upload_text_validation_error(test_setup):

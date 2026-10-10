@@ -2,12 +2,21 @@ import pytest
 from pydantic import ValidationError
 
 from ingestion.services.schemas import (
+    OcrTextExtraction,
+    OcrTextRow,
     PageMeta,
     RawExtraction,
     RawRow,
+    TextExtraction,
+    TextRow,
+    VisionExtraction,
+    VisionRow,
     apply_post_parse_rules,
     clean_json_text,
     get_strict_json_schema,
+    ocr_text_row_to_raw,
+    text_row_to_raw,
+    vision_row_to_raw,
 )
 
 
@@ -139,3 +148,60 @@ def test_get_strict_json_schema():
     assert schema["additionalProperties"] is False
     assert "properties" in schema
     assert "rows" in schema["required"]
+
+
+def test_v3_wire_models_and_conversion():
+    page = PageMeta(
+        bank_name_raw="Test Bank",
+        page_date_raw="Oktober 2026",
+        default_unit_raw="kg",
+        has_total_row=True,
+        total_raw="15 kg",
+    )
+    v_row = VisionRow(
+        tanggal_raw="01/10",
+        date_is_repeat=False,
+        nama_raw="Bu Siti",
+        jenis_raw="Kardus",
+        berat_raw="5 kg",
+        has_correction=True,
+        row_confidence=0.9,
+    )
+    v_ext = VisionExtraction(page=page, rows=[v_row])
+    assert len(v_ext.rows) == 1
+    raw = vision_row_to_raw(v_row, 0)
+    assert raw.row_index == 0
+    assert raw.nama_raw == "Bu Siti"
+    assert raw.has_correction is True
+    assert raw.y_min is None
+    assert raw.y_max is None
+
+    ocr_row = OcrTextRow(
+        tanggal_raw="01/10",
+        date_is_repeat=False,
+        nama_raw="Pak Joko",
+        jenis_raw="Plastik",
+        berat_raw="2 kg",
+        row_confidence=0.8,
+        source_lines=[3, 4],
+    )
+    ocr_ext = OcrTextExtraction(page=page, rows=[ocr_row])
+    assert len(ocr_ext.rows) == 1
+    raw_ocr = ocr_text_row_to_raw(ocr_row, 1)
+    assert raw_ocr.source_lines == [3, 4]
+    assert raw_ocr.has_correction is False
+
+    t_row = TextRow(
+        tanggal_raw="01/10",
+        date_is_repeat=False,
+        nama_raw="Mas Danu",
+        jenis_raw="Aki",
+        berat_raw="1 pcs",
+        row_confidence=0.95,
+        evidence_text="sample evidence",
+    )
+    t_ext = TextExtraction(page=page, rows=[t_row])
+    assert len(t_ext.rows) == 1
+    raw_t = text_row_to_raw(t_row, 2)
+    assert raw_t.evidence_text == "sample evidence"
+    assert raw_t.has_correction is False

@@ -168,7 +168,7 @@ def test_groq_replay_mode_roundtrip():
     cache_id = "test-llm-cache"
     cache_key = compute_llm_cache_key(
         cache_image_id=cache_id,
-        prompt_version="extract-v2",
+        prompt_version="extract-v3",
         model="qwen/qwen3.8-27b",
         structured_mode="json_schema_strict",
         strategy="text",
@@ -200,3 +200,33 @@ def test_groq_replay_mode_roundtrip():
         result = extractor.extract_from_text("sample", cache_image_id=cache_id, strategy="text")
         assert len(result.raw_extraction.rows) == 0
         assert result.prompt_tokens == 10
+
+
+def test_groq_json_object_mode_injects_schema_and_strips_fences():
+    extractor = GroqExtractor(api_key="dummy", structured_mode="json_object")
+    fenced_content = (
+        '```json\n{"page": {"bank_name_raw": null, "page_date_raw": null, '
+        '"default_unit_raw": null, "has_total_row": false, "total_raw": null}, '
+        '"rows": [{"tanggal_raw": "01/10", "date_is_repeat": false, '
+        '"nama_raw": "Bu Siti", "jenis_raw": "Kardus", "berat_raw": "4,5 kg", '
+        '"has_correction": false, "row_confidence": 0.95}]}\n```'
+    )
+    mock_resp = {
+        "choices": [{"message": {"content": fenced_content}}],
+        "usage": {"prompt_tokens": 50, "completion_tokens": 40},
+    }
+
+    with patch("django.conf.settings.LLM_MODE", "live"):
+        with patch.object(
+            extractor, "_call_groq_with_retries", return_value=mock_resp
+        ) as mock_call:
+            res = extractor.extract_from_image(b"fake-bytes", strategy="vision")
+            assert len(res.raw_extraction.rows) == 1
+            assert res.raw_extraction.rows[0].nama_raw == "Bu Siti"
+            assert res.prompt_tokens == 50
+            assert res.completion_tokens == 40
+
+            called_messages = mock_call.call_args[1]["messages"]
+            system_msg = next(m["content"] for m in called_messages if m["role"] == "system")
+            assert "JSON Schema:" in system_msg
+            assert "Example JSON:" in system_msg
