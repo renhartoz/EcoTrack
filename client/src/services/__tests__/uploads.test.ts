@@ -7,116 +7,89 @@ import {
   getUploads,
   retryUpload,
 } from "../uploads";
+import { http } from "../http";
 
 describe("uploads service", () => {
-  const originalFetch = globalThis.fetch;
-
   beforeEach(() => {
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
-    globalThis.fetch = originalFetch;
+    vi.restoreAllMocks();
   });
 
-  it("sends multipart form data with image and source_sha256 on createImageUpload", async () => {
-    let capturedBody: FormData | undefined;
-    const fetchMock = vi
-      .fn()
-      .mockImplementation(async (_url: string, init?: RequestInit) => {
-        capturedBody = init?.body as FormData;
-        return {
-          ok: true,
-          status: 201,
-          json: async () => ({ id: 41, status: "ready", rows: [] }),
-        };
-      });
-    globalThis.fetch = fetchMock;
+  it("builds correct FormData in createImageUpload", async () => {
+    const postSpy = vi.spyOn(http, "post").mockResolvedValue({
+      id: 42,
+      source_type: "image",
+      status: "processing",
+    } as never);
 
-    const dummyBlob = new Blob(["test-image-content"], { type: "image/jpeg" });
-    const dummySha256 =
+    const blob = new Blob(["fake-image-bytes"], { type: "image/jpeg" });
+    const sha256 =
       "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
-    const result = await createImageUpload(dummyBlob, dummySha256, "page1.jpg");
+    await createImageUpload(blob, sha256, "custom_page.jpg");
 
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toBe("/api/uploads/");
-    expect(capturedBody).toBeInstanceOf(FormData);
-    expect(capturedBody?.get("source_sha256")).toBe(dummySha256);
-    const filePart = capturedBody?.get("image");
-    expect(filePart).toBeInstanceOf(Blob);
-    expect(result.id).toBe(41);
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(postSpy.mock.calls[0][0]).toBe("/api/uploads/");
+
+    const sentFormData = postSpy.mock.calls[0][1] as FormData;
+    expect(sentFormData).toBeInstanceOf(FormData);
+    expect(sentFormData.get("source_sha256")).toBe(sha256);
+
+    const sentFile = sentFormData.get("image") as File;
+    expect(sentFile).toBeDefined();
+    expect(sentFile.name).toBe("custom_page.jpg");
   });
 
-  it("sends json payload on createTextUpload", async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 201,
-      json: async () => ({ id: 42, status: "ready", rows: [] }),
+  it("sends text payload in createTextUpload", async () => {
+    const postSpy = vi.spyOn(http, "post").mockResolvedValue({
+      id: 43,
+      source_type: "text",
+      status: "processing",
+    } as never);
+
+    await createTextUpload("12/9 Bu Siti botol 2 kg");
+
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(postSpy).toHaveBeenCalledWith("/api/uploads/text/", {
+      text: "12/9 Bu Siti botol 2 kg",
     });
-    globalThis.fetch = fetchMock;
-
-    const sampleText = "12/9 Bu Siti botol 2,5 kg";
-    const result = await createTextUpload(sampleText);
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/uploads/text/",
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({ text: sampleText }),
-      }),
-    );
-    expect(result.id).toBe(42);
   });
 
-  it("requests paginated list on getUploads", async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ count: 1, next: null, previous: null, results: [] }),
-    });
-    globalThis.fetch = fetchMock;
+  it("formats pagination query in getUploads", async () => {
+    const getSpy = vi.spyOn(http, "get").mockResolvedValue({
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    } as never);
 
-    await getUploads(2, 10);
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/uploads/?page=2&page_size=10",
-      expect.objectContaining({ method: "GET" }),
-    );
+    await getUploads(2, 25);
+
+    expect(getSpy).toHaveBeenCalledWith("/api/uploads/?page=2&page_size=25");
   });
 
-  it("requests upload detail on getUploadDetail", async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ id: 41, status: "ready", rows: [] }),
-    });
-    globalThis.fetch = fetchMock;
+  it("calls upload detail endpoint in getUploadDetail", async () => {
+    const getSpy = vi.spyOn(http, "get").mockResolvedValue({ id: 10 } as never);
 
-    const result = await getUploadDetail(41);
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/uploads/41/",
-      expect.objectContaining({ method: "GET" }),
-    );
-    expect(result.id).toBe(41);
+    await getUploadDetail(10);
+
+    expect(getSpy).toHaveBeenCalledWith("/api/uploads/10/");
   });
 
-  it("posts retry request on retryUpload", async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ id: 41, status: "ready", rows: [] }),
-    });
-    globalThis.fetch = fetchMock;
+  it("calls retry endpoint with empty payload in retryUpload", async () => {
+    const postSpy = vi
+      .spyOn(http, "post")
+      .mockResolvedValue({ id: 10 } as never);
 
-    const result = await retryUpload(41);
-    expect(fetchMock).toHaveBeenCalledWith(
-      "/api/uploads/41/retry/",
-      expect.objectContaining({ method: "POST" }),
-    );
-    expect(result.id).toBe(41);
+    await retryUpload(10);
+
+    expect(postSpy).toHaveBeenCalledWith("/api/uploads/10/retry/", {});
   });
 
-  it("returns correct image url from getUploadImageUrl", () => {
-    expect(getUploadImageUrl(41)).toBe("/api/uploads/41/image/");
+  it("returns correct image stream url in getUploadImageUrl", () => {
+    expect(getUploadImageUrl(55)).toBe("/api/uploads/55/image/");
   });
 });
