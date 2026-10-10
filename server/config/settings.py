@@ -125,7 +125,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-EXTRACTION_STRATEGY = env("EXTRACTION_STRATEGY", default="vision")
+EXTRACTION_STRATEGY = env("EXTRACTION_STRATEGY", default="ocr_text")
 GROQ_API_KEY = env("GROQ_API_KEY", default="")
 GROQ_VISION_MODEL = env("GROQ_VISION_MODEL", default="qwen/qwen3.8-27b")
 GROQ_TEXT_MODEL = env("GROQ_TEXT_MODEL", default="qwen/qwen3.8-27b")
@@ -140,3 +140,16 @@ LLM_MODE = env("LLM_MODE", default="live")
 LLM_TIMEOUT_S = env.int("LLM_TIMEOUT_S", default=60)
 MAX_UPLOAD_MB = env.int("MAX_UPLOAD_MB", default=4)
 UPLOAD_THROTTLE = env("UPLOAD_THROTTLE", default="30/hour")
+AUTO_SAVE_ENABLED = env.bool("AUTO_SAVE_ENABLED", default=False)
+T_AUTO = env.float("T_AUTO", default=0.92)
+T_CONFIRM = env.float("T_CONFIRM", default=0.60)
+SCORE_W_LLM = env.float("SCORE_W_LLM", default=0.20)
+SCORE_W_TYPE = env.float("SCORE_W_TYPE", default=0.25)
+SCORE_W_NAME = env.float("SCORE_W_NAME", default=0.20)
+SCORE_W_WEIGHT = env.float("SCORE_W_WEIGHT", default=0.25)
+SCORE_W_DATE = env.float("SCORE_W_DATE", default=0.10)
+MATCH_MIN_TYPE = env.float("MATCH_MIN_TYPE", default=0.75)
+MATCH_MIN_NASABAH = env.float("MATCH_MIN_NASABAH", default=0.85)
+MATCH_AMBIGUITY_MARGIN = env.float("MATCH_AMBIGUITY_MARGIN", default=0.05)
+MAX_WEIGHT_KG_PER_ROW = env.float("MAX_WEIGHT_KG_PER_ROW", default=200.0)
+
