@@ -11,8 +11,54 @@ class WireModel(BaseModel):
 class PageMeta(WireModel):
     bank_name_raw: str | None = None
     page_date_raw: str | None = None
+    default_unit_raw: str | None = None
     has_total_row: bool = False
     total_raw: str | None = None
+
+
+class VisionRow(WireModel):
+    tanggal_raw: str | None = None
+    date_is_repeat: bool = False
+    nama_raw: str | None = None
+    jenis_raw: str | None = None
+    berat_raw: str | None = None
+    has_correction: bool = False
+    row_confidence: float = 0.0
+
+
+class OcrTextRow(WireModel):
+    tanggal_raw: str | None = None
+    date_is_repeat: bool = False
+    nama_raw: str | None = None
+    jenis_raw: str | None = None
+    berat_raw: str | None = None
+    row_confidence: float = 0.0
+    source_lines: list[int] = []
+
+
+class TextRow(WireModel):
+    tanggal_raw: str | None = None
+    date_is_repeat: bool = False
+    nama_raw: str | None = None
+    jenis_raw: str | None = None
+    berat_raw: str | None = None
+    row_confidence: float = 0.0
+    evidence_text: str = ""
+
+
+class VisionExtraction(WireModel):
+    page: PageMeta
+    rows: list[VisionRow]
+
+
+class OcrTextExtraction(WireModel):
+    page: PageMeta
+    rows: list[OcrTextRow]
+
+
+class TextExtraction(WireModel):
+    page: PageMeta
+    rows: list[TextRow]
 
 
 class RawRow(WireModel):
@@ -24,6 +70,7 @@ class RawRow(WireModel):
     berat_raw: str | None = None
     satuan_raw: str | None = None
     evidence_text: str = ""
+    has_correction: bool = False
     row_confidence: float = 0.0
     y_min: float | None = None
     y_max: float | None = None
@@ -33,6 +80,62 @@ class RawRow(WireModel):
 class RawExtraction(WireModel):
     page: PageMeta
     rows: list[RawRow]
+
+
+def vision_row_to_raw(row: VisionRow, idx: int) -> RawRow:
+    evidence_parts = [p for p in [row.tanggal_raw, row.nama_raw, row.jenis_raw, row.berat_raw] if p]
+    evidence = " ".join(evidence_parts)
+    return RawRow(
+        row_index=idx,
+        tanggal_raw=row.tanggal_raw,
+        date_is_repeat=row.date_is_repeat,
+        nama_raw=row.nama_raw,
+        jenis_raw=row.jenis_raw,
+        berat_raw=row.berat_raw,
+        satuan_raw=None,
+        evidence_text=evidence,
+        has_correction=row.has_correction,
+        row_confidence=row.row_confidence,
+        y_min=None,
+        y_max=None,
+        source_lines=None,
+    )
+
+
+def ocr_text_row_to_raw(row: OcrTextRow, idx: int) -> RawRow:
+    return RawRow(
+        row_index=idx,
+        tanggal_raw=row.tanggal_raw,
+        date_is_repeat=row.date_is_repeat,
+        nama_raw=row.nama_raw,
+        jenis_raw=row.jenis_raw,
+        berat_raw=row.berat_raw,
+        satuan_raw=None,
+        evidence_text="",
+        has_correction=False,
+        row_confidence=row.row_confidence,
+        y_min=None,
+        y_max=None,
+        source_lines=row.source_lines,
+    )
+
+
+def text_row_to_raw(row: TextRow, idx: int) -> RawRow:
+    return RawRow(
+        row_index=idx,
+        tanggal_raw=row.tanggal_raw,
+        date_is_repeat=row.date_is_repeat,
+        nama_raw=row.nama_raw,
+        jenis_raw=row.jenis_raw,
+        berat_raw=row.berat_raw,
+        satuan_raw=None,
+        evidence_text=row.evidence_text,
+        has_correction=False,
+        row_confidence=row.row_confidence,
+        y_min=None,
+        y_max=None,
+        source_lines=None,
+    )
 
 
 def clean_json_text(raw_text: str) -> str:
@@ -80,6 +183,7 @@ def apply_post_parse_rules(
                 berat_raw=row.berat_raw,
                 satuan_raw=row.satuan_raw,
                 evidence_text=row.evidence_text,
+                has_correction=row.has_correction,
                 row_confidence=confidence,
                 y_min=y_min,
                 y_max=y_max,
@@ -93,8 +197,8 @@ def apply_post_parse_rules(
     )
 
 
-def get_strict_json_schema() -> dict[str, Any]:
-    schema = RawExtraction.model_json_schema()
+def get_strict_json_schema(model_cls: type[BaseModel] = VisionExtraction) -> dict[str, Any]:
+    schema = model_cls.model_json_schema()
 
     def enforce_strict(obj: Any) -> Any:
         if isinstance(obj, dict):
