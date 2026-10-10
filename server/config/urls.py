@@ -5,6 +5,7 @@ urlpatterns = [
     path("api/", include("core.urls")),
     path("api/", include("ingestion.urls")),
     path("api/", include("deposits.urls")),
+    path("api/", include("reports.urls")),
 ]
 
 handler404 = "core.exceptions.handler404"
