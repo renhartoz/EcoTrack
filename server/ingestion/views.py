@@ -217,7 +217,9 @@ class UploadConfirmAllView(BankScopedMixin, APIView):
         bank = self.get_bank()
         with transaction.atomic():
             upload = self.get_scoped_object_or_404(Upload.objects.select_for_update(), pk=pk)
-            pending_rows = upload.rows.select_for_update().filter(status="pending").order_by("row_index")
+            pending_rows = (
+                upload.rows.select_for_update().filter(status="pending").order_by("row_index")
+            )
 
             confirmed_count = 0
             skipped_count = 0
@@ -286,7 +288,12 @@ class ExtractedRowDetailView(BankScopedMixin, APIView):
             )
             if row.status != "pending":
                 return Response(
-                    {"error": {"code": "ROW_NOT_PENDING", "message": "Row is not in pending status."}},
+                    {
+                        "error": {
+                            "code": "ROW_NOT_PENDING",
+                            "message": "Row is not in pending status.",
+                        }
+                    },
                     status=status.HTTP_409_CONFLICT,
                 )
 
@@ -301,13 +308,23 @@ class ExtractedRowDetailView(BankScopedMixin, APIView):
                         nasabah = Nasabah.objects.get(id=n_id, bank_sampah=bank)
                         if not nasabah.is_active:
                             return Response(
-                                {"error": {"code": "VALIDATION_ERROR", "message": "Nasabah is inactive."}},
+                                {
+                                    "error": {
+                                        "code": "VALIDATION_ERROR",
+                                        "message": "Nasabah is inactive.",
+                                    }
+                                },
                                 status=status.HTTP_400_BAD_REQUEST,
                             )
                         row.nasabah = nasabah
                     except Nasabah.DoesNotExist:
                         return Response(
-                            {"error": {"code": "VALIDATION_ERROR", "message": "Nasabah not found."}},
+                            {
+                                "error": {
+                                    "code": "VALIDATION_ERROR",
+                                    "message": "Nasabah not found.",
+                                }
+                            },
                             status=status.HTTP_400_BAD_REQUEST,
                         )
                 else:
@@ -320,13 +337,23 @@ class ExtractedRowDetailView(BankScopedMixin, APIView):
                         waste_type = WasteType.objects.get(id=w_id)
                         if not waste_type.is_active:
                             return Response(
-                                {"error": {"code": "VALIDATION_ERROR", "message": "Waste type is inactive."}},
+                                {
+                                    "error": {
+                                        "code": "VALIDATION_ERROR",
+                                        "message": "Waste type is inactive.",
+                                    }
+                                },
                                 status=status.HTTP_400_BAD_REQUEST,
                             )
                         row.waste_type = waste_type
                     except WasteType.DoesNotExist:
                         return Response(
-                            {"error": {"code": "VALIDATION_ERROR", "message": "Waste type not found."}},
+                            {
+                                "error": {
+                                    "code": "VALIDATION_ERROR",
+                                    "message": "Waste type not found.",
+                                }
+                            },
                             status=status.HTTP_400_BAD_REQUEST,
                         )
                 else:
@@ -413,7 +440,12 @@ class ExtractedRowConfirmView(BankScopedMixin, APIView):
             )
             if row.status != "pending":
                 return Response(
-                    {"error": {"code": "ROW_NOT_PENDING", "message": "Row is not in pending status."}},
+                    {
+                        "error": {
+                            "code": "ROW_NOT_PENDING",
+                            "message": "Row is not in pending status.",
+                        }
+                    },
                     status=status.HTTP_409_CONFLICT,
                 )
 
@@ -426,7 +458,12 @@ class ExtractedRowConfirmView(BankScopedMixin, APIView):
                 or row.tanggal is None
             ):
                 return Response(
-                    {"error": {"code": "ROW_HAS_HARD_FLAGS", "message": "Row has hard validation flags."}},
+                    {
+                        "error": {
+                            "code": "ROW_HAS_HARD_FLAGS",
+                            "message": "Row has hard validation flags.",
+                        }
+                    },
                     status=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 )
 
@@ -475,7 +512,12 @@ class ExtractedRowRejectView(BankScopedMixin, APIView):
             )
             if row.status != "pending":
                 return Response(
-                    {"error": {"code": "ROW_NOT_PENDING", "message": "Row is not in pending status."}},
+                    {
+                        "error": {
+                            "code": "ROW_NOT_PENDING",
+                            "message": "Row is not in pending status.",
+                        }
+                    },
                     status=status.HTTP_409_CONFLICT,
                 )
 

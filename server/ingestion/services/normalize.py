@@ -1,7 +1,7 @@
-from datetime import date
-from decimal import Decimal, ROUND_HALF_UP
 import re
 import unicodedata
+from datetime import date
+from decimal import ROUND_HALF_UP, Decimal
 
 try:
     from rapidfuzz import fuzz, process
@@ -324,10 +324,7 @@ def match_waste_type(
         second_match_text, second_raw_score, _ = extracted[1]
         second_score = float(second_raw_score) / 100.0
         second_type_id = choice_type_map[second_match_text]
-        if (
-            second_type_id != best_type_id
-            and (best_score - second_score) < ambiguity_margin
-        ):
+        if second_type_id != best_type_id and (best_score - second_score) < ambiguity_margin:
             return (
                 best_type_id,
                 best_score,
@@ -375,10 +372,7 @@ def match_nasabah(
         second_name, second_raw_score, _ = extracted[1]
         second_score = float(second_raw_score) / 100.0
         second_nasabah_id = id_map[second_name]
-        if (
-            second_nasabah_id != best_nasabah_id
-            and (best_score - second_score) < ambiguity_margin
-        ):
+        if second_nasabah_id != best_nasabah_id and (best_score - second_score) < ambiguity_margin:
             return (
                 best_nasabah_id,
                 best_score,

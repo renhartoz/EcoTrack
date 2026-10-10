@@ -152,4 +152,3 @@ MATCH_MIN_TYPE = env.float("MATCH_MIN_TYPE", default=0.75)
 MATCH_MIN_NASABAH = env.float("MATCH_MIN_NASABAH", default=0.85)
 MATCH_AMBIGUITY_MARGIN = env.float("MATCH_AMBIGUITY_MARGIN", default=0.05)
 MAX_WEIGHT_KG_PER_ROW = env.float("MAX_WEIGHT_KG_PER_ROW", default=200.0)
-

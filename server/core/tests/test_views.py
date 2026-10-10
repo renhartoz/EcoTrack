@@ -11,8 +11,16 @@ def core_setup(db):
     bank_a = BankSampah.objects.create(name="Bank A")
     bank_b = BankSampah.objects.create(name="Bank B")
 
-    user_a = User.objects.create_user(username="user_a", password="Password123", bank_sampah=bank_a)
-    user_b = User.objects.create_user(username="user_b", password="Password123", bank_sampah=bank_b)
+    user_a = User.objects.create_user(
+        username="user_a",
+        password="Password123",
+        bank_sampah=bank_a,
+    )
+    user_b = User.objects.create_user(
+        username="user_b",
+        password="Password123",
+        bank_sampah=bank_b,
+    )
 
     client_a = APIClient()
     client_a.force_authenticate(user=user_a)
@@ -20,8 +28,16 @@ def core_setup(db):
     client_b = APIClient()
     client_b.force_authenticate(user=user_b)
 
-    nasabah_a = Nasabah.objects.create(bank_sampah=bank_a, name="Siti", normalized_name="siti")
-    nasabah_b = Nasabah.objects.create(bank_sampah=bank_b, name="Bambang", normalized_name="bambang")
+    nasabah_a = Nasabah.objects.create(
+        bank_sampah=bank_a,
+        name="Siti",
+        normalized_name="siti",
+    )
+    nasabah_b = Nasabah.objects.create(
+        bank_sampah=bank_b,
+        name="Bambang",
+        normalized_name="bambang",
+    )
 
     waste_type = WasteType.objects.create(code="pet", name_id="Plastik PET (botol)")
 
@@ -75,7 +91,11 @@ def test_nasabah_detail_and_patch(core_setup):
     assert res_get.status_code == status.HTTP_200_OK
     assert res_get.json()["name"] == "Siti"
 
-    res_patch = client.patch(f"/api/nasabah/{nasabah.id}/", {"name": "Siti Aminah"}, format="json")
+    res_patch = client.patch(
+        f"/api/nasabah/{nasabah.id}/",
+        {"name": "Siti Aminah"},
+        format="json",
+    )
     assert res_patch.status_code == status.HTTP_200_OK
     assert res_patch.json()["name"] == "Siti Aminah"
     assert res_patch.json()["normalized_name"] == "siti aminah"

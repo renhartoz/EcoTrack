@@ -1,8 +1,8 @@
 import io
-from decimal import Decimal
 
-from django.core.management import call_command
 import pytest
+from django.conf import settings
+from django.core.management import call_command
 from PIL import Image
 
 from accounts.models import User
@@ -24,7 +24,11 @@ def p001_setup(db, monkeypatch):
     call_command("loaddata", "core/fixtures/waste_types.json")
 
     bank = BankSampah.objects.create(name="Bank Sampah P001", is_demo=False)
-    user = User.objects.create_user(username="p001_operator", password="Password123", bank_sampah=bank)
+    user = User.objects.create_user(
+        username="p001_operator",
+        password="Password123",
+        bank_sampah=bank,
+    )
 
     nasabah_names = [
         "Ambar",
@@ -45,7 +49,6 @@ def p001_setup(db, monkeypatch):
     monkeypatch.setenv("EXTRACTION_STRATEGY", "ocr_text")
     monkeypatch.setenv("AUTO_SAVE_ENABLED", "true")
 
-    from django.conf import settings
     settings.LLM_MODE = "fake"
     settings.EXTRACTION_STRATEGY = "ocr_text"
     settings.AUTO_SAVE_ENABLED = True
@@ -92,7 +95,8 @@ def test_p001_e2e_extraction_and_routing(p001_setup):
         nama = (row.nama_raw or "").lower()
         for forbidden in forbidden_auto_names:
             if forbidden in nama:
-                assert row.route != "auto", f"Row with name '{row.nama_raw}' was routed to 'auto'!"
+                msg = f"Row with name '{row.nama_raw}' was routed to 'auto'!"
+                assert row.route != "auto", msg
 
     auto_rows = rows.filter(route="auto")
     for auto_row in auto_rows:

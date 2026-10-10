@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 from django.conf import settings
 
 
@@ -44,11 +45,7 @@ def compute_row_score(
         s_date = 1.0
 
     score = (
-        w_llm * s_llm
-        + w_type * s_type
-        + w_name * s_name
-        + w_weight * s_weight
-        + w_date * s_date
+        w_llm * s_llm + w_type * s_type + w_name * s_name + w_weight * s_weight + w_date * s_date
     )
     return round(float(score), 4)
 

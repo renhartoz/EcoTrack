@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 from rest_framework import serializers
 
 from core.models import Nasabah, WasteType

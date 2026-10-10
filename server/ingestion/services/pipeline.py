@@ -167,9 +167,7 @@ def process_upload(upload_id: int) -> Upload:
 
         page_meta = output.raw_extraction.page
         upload_year = (
-            locked_upload.created_at.year
-            if locked_upload.created_at
-            else timezone.now().year
+            locked_upload.created_at.year if locked_upload.created_at else timezone.now().year
         )
         previous_date = None
 

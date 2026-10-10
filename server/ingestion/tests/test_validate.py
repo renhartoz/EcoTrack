@@ -1,8 +1,6 @@
 from datetime import date, timedelta
 from decimal import Decimal
 
-import pytest
-
 from core.models import BankSampah, Nasabah, WasteType
 from deposits.models import Deposit
 from ingestion.services.validate import validate_page_rows, validate_row_single

@@ -16,8 +16,16 @@ def deposits_setup(db):
     bank_a = BankSampah.objects.create(name="Bank A")
     bank_b = BankSampah.objects.create(name="Bank B")
 
-    user_a = User.objects.create_user(username="user_a", password="Password123", bank_sampah=bank_a)
-    user_b = User.objects.create_user(username="user_b", password="Password123", bank_sampah=bank_b)
+    user_a = User.objects.create_user(
+        username="user_a",
+        password="Password123",
+        bank_sampah=bank_a,
+    )
+    user_b = User.objects.create_user(
+        username="user_b",
+        password="Password123",
+        bank_sampah=bank_b,
+    )
 
     client_a = APIClient()
     client_a.force_authenticate(user=user_a)
@@ -25,8 +33,16 @@ def deposits_setup(db):
     client_b = APIClient()
     client_b.force_authenticate(user=user_b)
 
-    nasabah_a = Nasabah.objects.create(bank_sampah=bank_a, name="Siti", normalized_name="siti")
-    nasabah_b = Nasabah.objects.create(bank_sampah=bank_b, name="Bambang", normalized_name="bambang")
+    nasabah_a = Nasabah.objects.create(
+        bank_sampah=bank_a,
+        name="Siti",
+        normalized_name="siti",
+    )
+    nasabah_b = Nasabah.objects.create(
+        bank_sampah=bank_b,
+        name="Bambang",
+        normalized_name="bambang",
+    )
 
     waste_type = WasteType.objects.create(code="kardus", name_id="Kardus")
 
@@ -117,11 +133,19 @@ def test_deposit_patch_and_audit(deposits_setup):
         source="manual",
     )
 
-    res = client.patch(f"/api/deposits/{dep.id}/", {"weight_kg": "4.000"}, format="json")
+    res = client.patch(
+        f"/api/deposits/{dep.id}/",
+        {"weight_kg": "4.000"},
+        format="json",
+    )
     assert res.status_code == status.HTTP_200_OK
     assert res.json()["weight_kg"] == "4.000"
 
-    audit = AuditLog.objects.filter(entity_type="deposit", entity_id=dep.id, action="update").first()
+    audit = AuditLog.objects.filter(
+        entity_type="deposit",
+        entity_id=dep.id,
+        action="update",
+    ).first()
     assert audit is not None
     assert audit.after["weight_kg"] == "4.000"
 
@@ -133,9 +157,19 @@ def test_deposit_soft_delete_undo_and_row_revert(deposits_setup):
     nasabah = deposits_setup["nasabah_a"]
     wt = deposits_setup["waste_type"]
 
-    upload = Upload.objects.create(bank_sampah=bank, created_by=user, source_type="text", status="ready")
+    upload = Upload.objects.create(
+        bank_sampah=bank,
+        created_by=user,
+        source_type="text",
+        status="ready",
+    )
     extraction = Extraction.objects.create(
-        upload=upload, strategy="text", provider="groq", model="qwen", prompt_version="v3", schema_version="v3"
+        upload=upload,
+        strategy="text",
+        provider="groq",
+        model="qwen",
+        prompt_version="v3",
+        schema_version="v3",
     )
 
     dep = Deposit.objects.create(
@@ -166,10 +200,18 @@ def test_deposit_soft_delete_undo_and_row_revert(deposits_setup):
     row.refresh_from_db()
     assert row.status == "reverted"
 
-    delete_audit = AuditLog.objects.filter(entity_type="deposit", entity_id=dep.id, action="delete").first()
+    delete_audit = AuditLog.objects.filter(
+        entity_type="deposit",
+        entity_id=dep.id,
+        action="delete",
+    ).first()
     assert delete_audit is not None
 
-    row_audit = AuditLog.objects.filter(entity_type="extracted_row", entity_id=row.id, action="revert").first()
+    row_audit = AuditLog.objects.filter(
+        entity_type="extracted_row",
+        entity_id=row.id,
+        action="revert",
+    ).first()
     assert row_audit is not None
 
     res_dup = client.delete(f"/api/deposits/{dep.id}/")

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from core.models import Nasabah, WasteType
-from ingestion.services.normalize import normalize_text
 
 
 class NasabahSerializer(serializers.ModelSerializer):
