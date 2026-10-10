@@ -77,13 +77,10 @@ def test_pipeline_process_upload_image_success(bank_and_user):
 
     row = result.rows.first()
     assert row.status == "pending"
-    assert row.tanggal is None
-    assert row.nasabah is None
-    assert row.waste_type is None
-    assert row.weight_kg is None
-    assert row.flags == []
-    assert row.score is None
-    assert row.route is None
+    assert row.tanggal is not None
+    assert row.weight_kg is not None
+    assert row.score is not None
+    assert row.route in ("manual", "confirm", "auto")
 
 
 @pytest.mark.django_db

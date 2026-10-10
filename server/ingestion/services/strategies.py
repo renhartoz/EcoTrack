@@ -108,6 +108,7 @@ class OcrTextStrategy(BaseStrategy):
                             berat_raw=row.berat_raw,
                             satuan_raw=row.satuan_raw,
                             evidence_text=row.evidence_text,
+                            has_correction=row.has_correction,
                             row_confidence=row.row_confidence,
                             y_min=padded_min_y,
                             y_max=padded_max_y,

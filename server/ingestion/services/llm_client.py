@@ -517,9 +517,11 @@ class GroqExtractor:
         )
 
     def _handle_fake_execution(self, strategy: str = "vision") -> ExtractionResult:
-        fixture_path = (
-            Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "groq_vision_valid.json"
-        )
+        fixtures_dir = Path(__file__).resolve().parent.parent / "tests" / "fixtures"
+        if strategy == "ocr_text":
+            fixture_path = fixtures_dir / "p001_groq_ocr_text.json"
+        else:
+            fixture_path = fixtures_dir / "groq_vision_valid.json"
         with open(fixture_path, encoding="utf-8") as f:
             raw_response = json.load(f)
         return self._parse_completion_response(raw_response, 100, strategy=strategy)
