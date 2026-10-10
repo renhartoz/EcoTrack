@@ -7,8 +7,14 @@ export async function createImageUpload(
   sourceSha256?: string,
   filename = "ledger.jpg",
 ): Promise<UploadDetail> {
+  const file =
+    imageBlob instanceof File
+      ? imageBlob
+      : new File([imageBlob], filename, {
+          type: imageBlob.type || "image/jpeg",
+        });
   const formData = new FormData();
-  formData.append("image", imageBlob, filename);
+  formData.append("image", file, filename);
   if (sourceSha256) {
     formData.append("source_sha256", sourceSha256);
   }
