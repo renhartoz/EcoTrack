@@ -175,6 +175,9 @@ class ExtractedRow(models.Model):
     evidence_text = models.TextField(
         default="",
     )
+    has_correction = models.BooleanField(
+        default=False,
+    )
     date_is_repeat = models.BooleanField(
         default=False,
     )
