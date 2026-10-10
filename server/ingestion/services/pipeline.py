@@ -155,6 +155,7 @@ def process_upload(upload_id: int) -> Upload:
                 berat_raw=row_data.berat_raw,
                 satuan_raw=row_data.satuan_raw,
                 evidence_text=row_data.evidence_text,
+                has_correction=row_data.has_correction,
                 date_is_repeat=row_data.date_is_repeat,
                 llm_confidence=row_data.row_confidence,
                 y_min=row_data.y_min,

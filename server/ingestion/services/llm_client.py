@@ -8,7 +8,7 @@ from typing import Any
 
 from django.conf import settings
 from groq import APIError, APITimeoutError, Groq, RateLimitError
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from ingestion.models import ProviderCache
 from ingestion.services.ocr_client import ReplayMissError
@@ -18,9 +18,17 @@ from ingestion.services.prompts import (
     VISION_SYSTEM_PROMPT,
 )
 from ingestion.services.schemas import (
+    OcrTextExtraction,
+    PageMeta,
     RawExtraction,
+    RawRow,
+    TextExtraction,
+    VisionExtraction,
     clean_json_text,
     get_strict_json_schema,
+    ocr_text_row_to_raw,
+    text_row_to_raw,
+    vision_row_to_raw,
 )
 
 
@@ -62,6 +70,106 @@ def compute_llm_cache_key(
 ) -> str:
     raw_key = f"llm:{cache_image_id}:{prompt_version}:{model}:{structured_mode}:{strategy}"
     return hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
+
+
+def get_strategy_wire_model(strategy: str) -> type[BaseModel]:
+    if strategy == "ocr_text":
+        return OcrTextExtraction
+    if strategy == "text":
+        return TextExtraction
+    return VisionExtraction
+
+
+def get_strategy_example(strategy: str) -> dict[str, Any]:
+    if strategy == "ocr_text":
+        return {
+            "page": {
+                "bank_name_raw": None,
+                "page_date_raw": "Oktober 2026",
+                "default_unit_raw": "kg",
+                "has_total_row": False,
+                "total_raw": None,
+            },
+            "rows": [
+                {
+                    "tanggal_raw": "01/10",
+                    "date_is_repeat": False,
+                    "nama_raw": "Bu Siti",
+                    "jenis_raw": "Kardus",
+                    "berat_raw": "4,5 kg",
+                    "row_confidence": 0.95,
+                    "source_lines": [2, 3],
+                }
+            ],
+        }
+    if strategy == "text":
+        return {
+            "page": {
+                "bank_name_raw": None,
+                "page_date_raw": "Oktober 2026",
+                "default_unit_raw": None,
+                "has_total_row": False,
+                "total_raw": None,
+            },
+            "rows": [
+                {
+                    "tanggal_raw": "01/10",
+                    "date_is_repeat": False,
+                    "nama_raw": "Bu Siti",
+                    "jenis_raw": "Kardus",
+                    "berat_raw": "4,5 kg",
+                    "row_confidence": 0.95,
+                    "evidence_text": "01/10 Bu Siti kardus 4,5 kg",
+                }
+            ],
+        }
+    return {
+        "page": {
+            "bank_name_raw": None,
+            "page_date_raw": "Oktober 2026",
+            "default_unit_raw": "kg",
+            "has_total_row": False,
+            "total_raw": None,
+        },
+        "rows": [
+            {
+                "tanggal_raw": "01/10",
+                "date_is_repeat": False,
+                "nama_raw": "Bu Siti",
+                "jenis_raw": "Kardus",
+                "berat_raw": "4,5 kg",
+                "has_correction": False,
+                "row_confidence": 0.95,
+            }
+        ],
+    }
+
+
+def inject_json_object_prompt(
+    messages: list[dict[str, Any]],
+    model_cls: type[BaseModel],
+    strategy: str,
+) -> list[dict[str, Any]]:
+    schema_dict = get_strict_json_schema(model_cls)
+    example_dict = get_strategy_example(strategy)
+    schema_str = json.dumps(schema_dict, indent=2)
+    example_str = json.dumps(example_dict, indent=2)
+
+    prompt_suffix = (
+        f"\n\nJSON Schema:\n{schema_str}\n\n"
+        f"Example JSON:\n{example_str}\n\n"
+        "Output exactly one valid JSON object adhering strictly to the above schema."
+    )
+
+    new_messages: list[dict[str, Any]] = []
+    for msg in messages:
+        if msg.get("role") == "system":
+            new_messages.append(
+                {"role": "system", "content": f"{msg.get('content', '')}{prompt_suffix}"}
+            )
+        else:
+            new_messages.append(dict(msg))
+    return new_messages
 
 
 class GroqExtractor:
@@ -167,27 +275,41 @@ class GroqExtractor:
         )
 
         if mode == "fake":
-            return self._handle_fake_execution()
+            return self._handle_fake_execution(strategy)
 
         if mode == "replay":
             cached = ProviderCache.objects.filter(key=cache_key, kind="llm").first()
             if not cached:
                 raise ReplayMissError("Replay miss for LLM cache key")
-            return self._parse_completion_response(cached.response, 0)
+            return self._parse_completion_response(cached.response, 0, strategy=strategy)
+
+        model_cls = get_strategy_wire_model(strategy)
+        call_messages = (
+            inject_json_object_prompt(messages, model_cls, strategy)
+            if self.structured_mode == "json_object"
+            else messages
+        )
 
         start_time = time.monotonic()
-        raw_response = self._call_groq_with_retries(messages=messages, model=model)
+        raw_response = self._call_groq_with_retries(
+            messages=call_messages, model=model, model_cls=model_cls
+        )
         latency_ms = int((time.monotonic() - start_time) * 1000)
 
         try:
-            result = self._parse_completion_response(raw_response, latency_ms)
+            result = self._parse_completion_response(raw_response, latency_ms, strategy=strategy)
         except ValidationError:
             raw_response = self._retry_schema_repair(
-                messages=messages, model=model, failed_response=raw_response
+                messages=call_messages,
+                model=model,
+                failed_response=raw_response,
+                model_cls=model_cls,
             )
             latency_ms = int((time.monotonic() - start_time) * 1000)
             try:
-                result = self._parse_completion_response(raw_response, latency_ms)
+                result = self._parse_completion_response(
+                    raw_response, latency_ms, strategy=strategy
+                )
             except ValidationError as exc:
                 raise LlmSchemaInvalidError(
                     "Output failed schema validation after repair attempt"
@@ -205,6 +327,7 @@ class GroqExtractor:
         self,
         messages: list[dict[str, Any]],
         model: str,
+        model_cls: type[BaseModel] = VisionExtraction,
     ) -> dict[str, Any]:
         client = Groq(api_key=self.api_key, max_retries=0, timeout=self.timeout)
 
@@ -221,7 +344,7 @@ class GroqExtractor:
                 "json_schema": {
                     "name": "raw_extraction",
                     "strict": True,
-                    "schema": get_strict_json_schema(),
+                    "schema": get_strict_json_schema(model_cls),
                 },
             }
         else:
@@ -258,6 +381,7 @@ class GroqExtractor:
         messages: list[dict[str, Any]],
         model: str,
         failed_response: dict[str, Any],
+        model_cls: type[BaseModel] = VisionExtraction,
     ) -> dict[str, Any]:
         choices = failed_response.get("choices") or []
         first_choice = choices[0] if choices else {}
@@ -268,7 +392,9 @@ class GroqExtractor:
             {"role": "assistant", "content": content},
             {"role": "user", "content": SCHEMA_REPAIR_PROMPT},
         ]
-        return self._call_groq_with_retries(messages=repair_messages, model=model)
+        return self._call_groq_with_retries(
+            messages=repair_messages, model=model, model_cls=model_cls
+        )
 
     def _parse_retry_after(self, exc: RateLimitError) -> float | None:
         response = getattr(exc, "response", None)
@@ -282,20 +408,101 @@ class GroqExtractor:
                     pass
         return None
 
+    def _dict_to_raw_extraction(
+        self,
+        data: dict[str, Any],
+        model_cls: type[BaseModel],
+    ) -> RawExtraction:
+        page_dict = data.get("page")
+        rows_list = data.get("rows")
+        if not isinstance(page_dict, dict) or not isinstance(rows_list, list):
+            raise LlmSchemaInvalidError("Response missing valid page or rows object")
+
+        try:
+            wire = model_cls.model_validate({"page": page_dict, "rows": rows_list})
+            return self._wire_to_raw_extraction(wire)
+        except ValidationError:
+            page_meta = PageMeta(
+                bank_name_raw=page_dict.get("bank_name_raw"),
+                page_date_raw=page_dict.get("page_date_raw"),
+                default_unit_raw=page_dict.get("default_unit_raw"),
+                has_total_row=bool(page_dict.get("has_total_row", False)),
+                total_raw=page_dict.get("total_raw"),
+            )
+            is_ocr_strategy = model_cls == OcrTextExtraction
+            raw_rows = [
+                RawRow(
+                    row_index=int(r.get("row_index", idx)),
+                    tanggal_raw=r.get("tanggal_raw"),
+                    date_is_repeat=bool(r.get("date_is_repeat", False)),
+                    nama_raw=r.get("nama_raw"),
+                    jenis_raw=r.get("jenis_raw"),
+                    berat_raw=r.get("berat_raw"),
+                    satuan_raw=r.get("satuan_raw"),
+                    evidence_text=str(r.get("evidence_text", "")),
+                    has_correction=bool(r.get("has_correction", False)),
+                    row_confidence=float(r.get("row_confidence", 0.0)),
+                    y_min=(
+                        float(r["y_min"])
+                        if r.get("y_min") is not None and is_ocr_strategy
+                        else None
+                    ),
+                    y_max=(
+                        float(r["y_max"])
+                        if r.get("y_max") is not None and is_ocr_strategy
+                        else None
+                    ),
+                    source_lines=r.get("source_lines"),
+                )
+                for idx, r in enumerate(rows_list)
+            ]
+            return RawExtraction(page=page_meta, rows=raw_rows)
+
+    def _wire_to_raw_extraction(
+        self,
+        wire: BaseModel,
+    ) -> RawExtraction:
+        if isinstance(wire, VisionExtraction):
+            return RawExtraction(
+                page=wire.page,
+                rows=[vision_row_to_raw(r, idx) for idx, r in enumerate(wire.rows)],
+            )
+        if isinstance(wire, OcrTextExtraction):
+            return RawExtraction(
+                page=wire.page,
+                rows=[ocr_text_row_to_raw(r, idx) for idx, r in enumerate(wire.rows)],
+            )
+        if isinstance(wire, TextExtraction):
+            return RawExtraction(
+                page=wire.page,
+                rows=[text_row_to_raw(r, idx) for idx, r in enumerate(wire.rows)],
+            )
+        if isinstance(wire, RawExtraction):
+            return wire
+        raise ValueError(f"Unknown wire extraction type: {type(wire)}")
+
     def _parse_completion_response(
         self,
         raw_response: dict[str, Any],
         latency_ms: int,
+        strategy: str = "vision",
     ) -> ExtractionResult:
         choices = raw_response.get("choices") or []
-        if not choices:
+        model_cls = get_strategy_wire_model(strategy)
+
+        if choices:
+            message = choices[0].get("message") or {}
+            content = message.get("content") or ""
+            cleaned = clean_json_text(content)
+            try:
+                wire = model_cls.model_validate_json(cleaned)
+                raw_extraction = self._wire_to_raw_extraction(wire)
+            except ValidationError:
+                raw_extraction = RawExtraction.model_validate_json(cleaned)
+        elif "rows" in raw_response and "page" in raw_response:
+            raw_extraction = self._dict_to_raw_extraction(raw_response, model_cls)
+        else:
             raise LlmSchemaInvalidError("Response choices array is empty")
-
-        message = choices[0].get("message") or {}
-        content = message.get("content") or ""
-
-        cleaned = clean_json_text(content)
-        raw_extraction = RawExtraction.model_validate_json(cleaned)
 
         usage = raw_response.get("usage") or {}
         prompt_tokens = int(usage.get("prompt_tokens") or 0)
@@ -309,10 +516,10 @@ class GroqExtractor:
             latency_ms=latency_ms,
         )
 
-    def _handle_fake_execution(self) -> ExtractionResult:
+    def _handle_fake_execution(self, strategy: str = "vision") -> ExtractionResult:
         fixture_path = (
             Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "groq_vision_valid.json"
         )
         with open(fixture_path, encoding="utf-8") as f:
             raw_response = json.load(f)
-        return self._parse_completion_response(raw_response, 100)
+        return self._parse_completion_response(raw_response, 100, strategy=strategy)

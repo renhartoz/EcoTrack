@@ -68,6 +68,35 @@ def parse_ocr_response(
             message = str(error_msg or "OCR processing failed")
         raise OcrApiError(message)
 
+    if "lines" in raw_response:
+        lines = [
+            OcrLine(
+                line_number=int(line_data.get("line_number", idx)),
+                text=str(line_data.get("text", "")),
+                x_min=float(line_data.get("x_min", 0.0)),
+                y_min=float(line_data.get("y_min", 0.0)),
+                x_max=float(line_data.get("x_max", 1.0)),
+                y_max=float(line_data.get("y_max", 1.0)),
+                words=[
+                    OcrWord(
+                        text=str(w.get("text", "")),
+                        x_min=float(w.get("x_min", 0.0)),
+                        y_min=float(w.get("y_min", 0.0)),
+                        x_max=float(w.get("x_max", 1.0)),
+                        y_max=float(w.get("y_max", 1.0)),
+                    )
+                    for w in line_data.get("words", [])
+                ],
+            )
+            for idx, line_data in enumerate(raw_response.get("lines", []))
+        ]
+        return OcrResult(
+            lines=lines,
+            raw_response=raw_response,
+            ocr_width=ocr_width,
+            ocr_height=ocr_height,
+        )
+
     parsed_results = raw_response.get("ParsedResults") or []
     if not parsed_results:
         return OcrResult(
