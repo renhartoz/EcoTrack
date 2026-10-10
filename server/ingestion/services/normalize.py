@@ -158,8 +158,7 @@ def parse_weight(
     elif unit_norm in TON_UNITS:
         multiplier = Decimal("1000")
     else:
-        multiplier = Decimal("1")
-        assumed_kg = True
+        return None, [{"code": "WEIGHT_UNPARSEABLE", "severity": "hard"}]
 
     token = num_tokens[0]
     has_dot = "." in token

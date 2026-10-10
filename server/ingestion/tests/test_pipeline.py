@@ -1,4 +1,8 @@
+import io
+
 import pytest
+from django.core.management import call_command
+from PIL import Image
 
 from accounts.models import User
 from core.models import BankSampah
@@ -9,6 +13,13 @@ from ingestion.services.strategies import (
     TextStrategy,
     VisionStrategy,
 )
+
+
+def create_sample_jpeg():
+    buf = io.BytesIO()
+    img = Image.new("RGB", (400, 400), (255, 255, 255))
+    img.save(buf, format="JPEG")
+    return buf.getvalue()
 
 
 @pytest.fixture
@@ -63,10 +74,11 @@ def test_pipeline_process_upload_image_success(bank_and_user):
         image_sha256="img-sha-123",
         status="processing",
     )
+    call_command("loaddata", "core/fixtures/waste_types.json")
     UploadImage.objects.create(
         upload=upload,
         content_type="image/jpeg",
-        data=b"fake-image-bytes",
+        data=create_sample_jpeg(),
     )
 
     result = process_upload(upload.id)

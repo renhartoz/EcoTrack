@@ -25,6 +25,7 @@ def test_weight_table_spec_14():
         ("abc", "kg", None, [{"code": "WEIGHT_UNPARSEABLE", "severity": "hard"}]),
         ("1/2", "kg", None, [{"code": "WEIGHT_UNPARSEABLE", "severity": "hard"}]),
         ("0", "kg", None, [{"code": "WEIGHT_NONPOSITIVE", "severity": "hard"}]),
+        ("1", "pcs", None, [{"code": "WEIGHT_UNPARSEABLE", "severity": "hard"}]),
     ]
 
     for berat_raw, satuan_raw, expected_val, expected_flags in cases:

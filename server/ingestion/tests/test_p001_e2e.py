@@ -32,14 +32,14 @@ def p001_setup(db, monkeypatch):
 
     nasabah_names = [
         "Ambar",
-        "Bambang",
-        "Danu",
+        "Edi",
         "Siti",
-        "RT",
-        "Rina",
-        "Sum",
         "Joko",
-        "Dewi",
+        "Sum",
+        "Danu",
+        "Sari",
+        "Budi",
+        "Rina",
         "Anton",
     ]
     for name in nasabah_names:
