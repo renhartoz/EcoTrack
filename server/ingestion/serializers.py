@@ -1,3 +1,4 @@
+from decimal import Decimal
 import re
 
 from rest_framework import serializers
@@ -93,10 +94,10 @@ class ExtractedRowSerializer(serializers.ModelSerializer):
 
     def get_normalized(self, obj):
         return {
-            "tanggal": obj.tanggal,
+            "tanggal": obj.tanggal.isoformat() if obj.tanggal else None,
             "nasabah_id": obj.nasabah_id,
             "waste_type_id": obj.waste_type_id,
-            "weight_kg": str(obj.weight_kg) if obj.weight_kg is not None else None,
+            "weight_kg": f"{obj.weight_kg:.3f}" if obj.weight_kg is not None else None,
         }
 
     def get_evidence(self, obj):
@@ -107,6 +108,20 @@ class ExtractedRowSerializer(serializers.ModelSerializer):
 
     def get_deposit_id(self, obj):
         return obj.deposit_id
+
+
+class ExtractedRowUpdateSerializer(serializers.Serializer):
+    tanggal = serializers.DateField(required=False, allow_null=True)
+    nasabah_id = serializers.IntegerField(required=False, allow_null=True)
+    waste_type_id = serializers.IntegerField(required=False, allow_null=True)
+    weight_kg = serializers.DecimalField(
+        max_digits=10, decimal_places=3, required=False, allow_null=True
+    )
+
+    def validate_weight_kg(self, value):
+        if value is not None and value <= Decimal("0"):
+            raise serializers.ValidationError("Weight must be positive.")
+        return value
 
 
 class UploadDetailSerializer(serializers.ModelSerializer):
@@ -139,9 +154,9 @@ class UploadDetailSerializer(serializers.ModelSerializer):
     def get_counts(self, obj):
         rows = obj.rows.all()
         return {
-            "auto": 0,
-            "confirm": 0,
-            "manual": 0,
+            "auto": rows.filter(route="auto").count(),
+            "confirm": rows.filter(route="confirm").count(),
+            "manual": rows.filter(route="manual").count(),
             "saved": rows.filter(status="saved").count(),
             "pending": rows.filter(status="pending").count(),
         }
