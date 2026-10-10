@@ -17,7 +17,7 @@ describe("strings.id mappings", () => {
     }
   });
 
-  it("covers all 17 flag codes from spec Section 12.4", () => {
+  it("covers all 18 flag codes from spec Section 12.4", () => {
     const requiredFlags: FlagCode[] = [
       "WEIGHT_UNPARSEABLE",
       "WEIGHT_NONPOSITIVE",
@@ -36,9 +36,10 @@ describe("strings.id mappings", () => {
       "DUPLICATE_IN_DB",
       "PAGE_TOTAL_MISMATCH",
       "WEIGHT_READER_MISMATCH",
+      "CORRECTION_PRESENT",
     ];
 
-    expect(requiredFlags).toHaveLength(17);
+    expect(requiredFlags).toHaveLength(18);
     for (const flag of requiredFlags) {
       expect(FLAG_MESSAGES[flag]).toBeDefined();
       expect(FLAG_MESSAGES[flag].length).toBeGreaterThan(0);
@@ -69,5 +70,11 @@ describe("strings.id mappings", () => {
       expect(ERROR_MESSAGES[code]).toBeDefined();
       expect(ERROR_MESSAGES[code].length).toBeGreaterThan(0);
     }
+    expect(ERROR_MESSAGES.ROW_NOT_PENDING).toBe(
+      "Baris sudah diproses sebelumnya",
+    );
+    expect(ERROR_MESSAGES.ROW_HAS_HARD_FLAGS).toBe(
+      "Baris memiliki kesalahan yang harus diperbaiki",
+    );
   });
 });
