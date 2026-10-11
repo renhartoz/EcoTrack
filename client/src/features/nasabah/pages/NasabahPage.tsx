@@ -50,7 +50,7 @@ export function NasabahPage() {
   });
 
   const renameMutation = useMutation({
-    mutationFn: ({ id, name }: { id: number; name: string }) =>
+    mutationFn: ({ id, name }: { id: string; name: string }) =>
       updateNasabah(id, { name }),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["nasabah-list"] });
@@ -64,7 +64,7 @@ export function NasabahPage() {
   });
 
   const toggleActiveMutation = useMutation({
-    mutationFn: ({ id, isActive }: { id: number; isActive: boolean }) =>
+    mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
       updateNasabah(id, { is_active: isActive }),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["nasabah-list"] });

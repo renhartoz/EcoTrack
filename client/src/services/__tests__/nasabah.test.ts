@@ -59,22 +59,22 @@ describe("nasabah service", () => {
 
   it("calls get with id in getNasabahDetail", async () => {
     const getSpy = vi.spyOn(http, "get").mockResolvedValue({
-      id: 7,
+      id: "7",
       name: "Siti",
     } as never);
 
-    await getNasabahDetail(7);
+    await getNasabahDetail("7");
 
     expect(getSpy).toHaveBeenCalledWith("/api/nasabah/7/");
   });
 
   it("calls patch with payload in updateNasabah", async () => {
     const patchSpy = vi.spyOn(http, "patch").mockResolvedValue({
-      id: 7,
+      id: "7",
       name: "Siti Updated",
     } as never);
 
-    await updateNasabah(7, { name: "Siti Updated", is_active: false });
+    await updateNasabah("7", { name: "Siti Updated", is_active: false });
 
     expect(patchSpy).toHaveBeenCalledWith("/api/nasabah/7/", {
       name: "Siti Updated",

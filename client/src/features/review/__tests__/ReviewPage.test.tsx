@@ -27,7 +27,7 @@ describe("ReviewPage", () => {
 
   it("renders raw fields in rows table when upload is ready", async () => {
     const mockDetail: UploadDetail = {
-      id: 41,
+      id: "41",
       source_type: "image",
       status: "ready",
       source_sha256: null,
@@ -39,7 +39,7 @@ describe("ReviewPage", () => {
       counts: { auto: 0, confirm: 0, manual: 0, saved: 0, pending: 1 },
       rows: [
         {
-          id: 301,
+          id: "301",
           row_index: 0,
           status: "pending",
           route: null,
@@ -98,7 +98,7 @@ describe("ReviewPage", () => {
 
   it("renders failed state with error message and retry button", async () => {
     const mockFailedDetail: UploadDetail = {
-      id: 42,
+      id: "42",
       source_type: "image",
       status: "failed",
       source_sha256: null,

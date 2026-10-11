@@ -100,25 +100,25 @@ describe("confirmAll eligibility", () => {
 
   it("filters multiple rows and calculates correct eligible count", () => {
     const rows: ExtractedRow[] = [
-      createMockRow({ id: 1 }),
+      createMockRow({ id: "row-1" }),
       createMockRow({
-        id: 2,
+        id: "row-2",
         flags: [{ code: "AMBIGUOUS_TYPE", severity: "soft" }],
       }),
       createMockRow({
-        id: 3,
+        id: "row-3",
         flags: [{ code: "NASABAH_UNKNOWN", severity: "hard" }],
       }),
       createMockRow({
-        id: 4,
+        id: "row-4",
         flags: [{ code: "DUPLICATE_IN_PAGE", severity: "soft" }],
       }),
-      createMockRow({ id: 5, route: "manual" }),
-      createMockRow({ id: 6, status: "saved" }),
+      createMockRow({ id: "row-5", route: "manual" }),
+      createMockRow({ id: "row-6", status: "saved" }),
     ];
 
     const eligible = filterEligibleForConfirmAll(rows);
     expect(eligible).toHaveLength(2);
-    expect(eligible.map((r) => r.id)).toEqual([1, 2]);
+    expect(eligible.map((r) => r.id)).toEqual(["row-1", "row-2"]);
   });
 });

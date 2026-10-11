@@ -31,8 +31,8 @@ describe("deposits service", () => {
     await getDeposits({
       from: "2026-09-01",
       to: "2026-09-30",
-      nasabah: 7,
-      waste_type: 2,
+      nasabah: "7",
+      waste_type: "2",
       source: "confirmed",
       page: 1,
       page_size: 20,
@@ -59,11 +59,11 @@ describe("deposits service", () => {
   it("calls post with payload in createDeposit", async () => {
     const postSpy = vi
       .spyOn(http, "post")
-      .mockResolvedValue({ id: 501 } as never);
+      .mockResolvedValue({ id: "501" } as never);
 
     const payload = {
-      nasabah_id: 7,
-      waste_type_id: 2,
+      nasabah_id: "7",
+      waste_type_id: "2",
       weight_kg: "2.500",
       deposit_date: "2026-09-12",
     };
@@ -76,14 +76,14 @@ describe("deposits service", () => {
   it("calls patch with payload in updateDeposit", async () => {
     const patchSpy = vi
       .spyOn(http, "patch")
-      .mockResolvedValue({ id: 501 } as never);
+      .mockResolvedValue({ id: "501" } as never);
 
     const payload = {
       weight_kg: "3.000",
       deposit_date: "2026-09-13",
     };
 
-    await updateDeposit(501, payload);
+    await updateDeposit("501", payload);
 
     expect(patchSpy).toHaveBeenCalledWith("/api/deposits/501/", payload);
   });
@@ -94,7 +94,7 @@ describe("deposits service", () => {
       deleted_at: "2026-10-06T15:40:00Z",
     } as never);
 
-    await deleteDeposit(501);
+    await deleteDeposit("501");
 
     expect(deleteSpy).toHaveBeenCalledWith("/api/deposits/501/");
   });

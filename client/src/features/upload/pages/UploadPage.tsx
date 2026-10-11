@@ -36,7 +36,7 @@ export function UploadPage() {
   const [textInput, setTextInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [failedUploadId, setFailedUploadId] = useState<number | null>(null);
+  const [failedUploadId, setFailedUploadId] = useState<string | null>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
