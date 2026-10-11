@@ -28,8 +28,8 @@ export interface RawRowFields {
 
 export interface NormalizedRowFields {
   tanggal: string | null;
-  nasabah_id: number | null;
-  waste_type_id: number | null;
+  nasabah_id: string | null;
+  waste_type_id: string | null;
   weight_kg: string | null;
 }
 
@@ -44,7 +44,7 @@ export interface RowFlag {
 }
 
 export interface ExtractedRow {
-  id: number;
+  id: string;
   row_index: number;
   status: RowStatus;
   route: RowRoute;
@@ -54,7 +54,7 @@ export interface ExtractedRow {
   normalized: NormalizedRowFields;
   evidence: RowEvidence;
   human_edited: boolean;
-  deposit_id: number | null;
+  deposit_id: string | null;
 }
 
 export interface UploadDetail {

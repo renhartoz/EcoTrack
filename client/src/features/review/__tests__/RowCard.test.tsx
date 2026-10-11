@@ -7,7 +7,7 @@ import type { ExtractedRow } from "@/types/uploads";
 
 function createMockRow(overrides: Partial<ExtractedRow> = {}): ExtractedRow {
   return {
-    id: 101,
+    id: "row-101",
     row_index: 0,
     status: "pending",
     route: "confirm",
@@ -23,8 +23,8 @@ function createMockRow(overrides: Partial<ExtractedRow> = {}): ExtractedRow {
     },
     normalized: {
       tanggal: "2026-09-12",
-      nasabah_id: 1,
-      waste_type_id: 2,
+      nasabah_id: "nasabah-1",
+      waste_type_id: "waste-2",
       weight_kg: "2.500",
     },
     evidence: {
@@ -59,7 +59,7 @@ describe("RowCard component", () => {
       root.render(
         <RowCard
           row={row}
-          uploadId={1}
+          uploadId="upload-1"
           sourceType="image"
           nasabahList={[]}
           wasteTypes={[]}
@@ -94,7 +94,7 @@ describe("RowCard component", () => {
       root.render(
         <RowCard
           row={row}
-          uploadId={1}
+          uploadId="upload-1"
           sourceType="image"
           nasabahList={[]}
           wasteTypes={[]}
@@ -128,7 +128,7 @@ describe("RowCard component", () => {
       root.render(
         <RowCard
           row={row}
-          uploadId={1}
+          uploadId="upload-1"
           sourceType="image"
           nasabahList={[]}
           wasteTypes={[]}
@@ -168,7 +168,7 @@ describe("RowCard component", () => {
       root.render(
         <RowCard
           row={row}
-          uploadId={1}
+          uploadId="upload-1"
           sourceType="image"
           nasabahList={[]}
           wasteTypes={[]}

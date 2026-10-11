@@ -45,14 +45,14 @@ export async function createDeposit(
 }
 
 export async function updateDeposit(
-  id: number | string,
+  id: string,
   payload: DepositUpdatePayload,
 ): Promise<Deposit> {
   return http.patch<Deposit>(`/api/deposits/${id}/`, payload);
 }
 
 export async function deleteDeposit(
-  id: number | string,
+  id: string,
 ): Promise<{ status: string; deleted_at: string }> {
   return http.delete<{ status: string; deleted_at: string }>(
     `/api/deposits/${id}/`,

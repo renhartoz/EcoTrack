@@ -1,3 +1,4 @@
+import uuid
 from collections import Counter
 from datetime import date, timedelta
 from decimal import Decimal
@@ -25,8 +26,8 @@ def validate_row_single(
     has_correction: bool,
     llm_confidence: float,
     tanggal: date | None,
-    nasabah_id: int | None,
-    waste_type_id: int | None,
+    nasabah_id: uuid.UUID | str | int | None,
+    waste_type_id: uuid.UUID | str | int | None,
     weight_kg: Decimal | None,
     initial_flags: list[dict[str, str]],
     today: date,
@@ -64,7 +65,7 @@ def validate_row_single(
 
 def validate_page_rows(
     rows_data: list[dict],
-    bank_id: int,
+    bank_id: uuid.UUID | str | int,
     today: date | None = None,
 ) -> list[list[dict[str, str]]]:
     if today is None:

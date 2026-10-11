@@ -10,6 +10,6 @@ from core.views import (
 urlpatterns = [
     path("health/", HealthView.as_view(), name="health"),
     path("nasabah/", NasabahListCreateView.as_view(), name="nasabah-list-create"),
-    path("nasabah/<int:pk>/", NasabahDetailView.as_view(), name="nasabah-detail"),
+    path("nasabah/<uuid:pk>/", NasabahDetailView.as_view(), name="nasabah-detail"),
     path("waste-types/", WasteTypeListView.as_view(), name="waste-type-list"),
 ]

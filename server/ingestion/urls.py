@@ -23,7 +23,7 @@ urlpatterns = [
         UploadConfirmAllView.as_view(),
         name="upload-confirm-all",
     ),
-    path("rows/<int:pk>/", ExtractedRowDetailView.as_view(), name="row-detail"),
-    path("rows/<int:pk>/confirm/", ExtractedRowConfirmView.as_view(), name="row-confirm"),
-    path("rows/<int:pk>/reject/", ExtractedRowRejectView.as_view(), name="row-reject"),
+    path("rows/<uuid:pk>/", ExtractedRowDetailView.as_view(), name="row-detail"),
+    path("rows/<uuid:pk>/confirm/", ExtractedRowConfirmView.as_view(), name="row-confirm"),
+    path("rows/<uuid:pk>/reject/", ExtractedRowRejectView.as_view(), name="row-reject"),
 ]

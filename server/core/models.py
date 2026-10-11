@@ -1,7 +1,14 @@
+import uuid
+
 from django.db import models
 
 
 class BankSampah(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=255, null=True, blank=True)
     is_demo = models.BooleanField(default=False)
@@ -9,6 +16,11 @@ class BankSampah(models.Model):
 
 
 class Nasabah(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     bank_sampah = models.ForeignKey(
         BankSampah,
         on_delete=models.CASCADE,
@@ -29,6 +41,11 @@ class Nasabah(models.Model):
 
 
 class WasteType(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     code = models.SlugField(max_length=50, unique=True)
     name_id = models.CharField(max_length=255)
     emission_factor_kgco2e_per_kg = models.DecimalField(
@@ -44,6 +61,11 @@ class WasteType(models.Model):
 
 
 class WasteTypeAlias(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     waste_type = models.ForeignKey(
         WasteType,
         on_delete=models.CASCADE,

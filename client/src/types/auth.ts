@@ -1,12 +1,12 @@
 export interface BankSampah {
-  id: number;
+  id: string;
   name: string;
   city: string | null;
   is_demo: boolean;
 }
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   bank_sampah: BankSampah | null;
 }

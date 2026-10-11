@@ -9,5 +9,5 @@ from deposits.views import (
 urlpatterns = [
     path("deposits/", DepositListCreateView.as_view(), name="deposit-list-create"),
     path("deposits/export/", DepositExportView.as_view(), name="deposit-export"),
-    path("deposits/<int:pk>/", DepositDetailView.as_view(), name="deposit-detail"),
+    path("deposits/<uuid:pk>/", DepositDetailView.as_view(), name="deposit-detail"),
 ]

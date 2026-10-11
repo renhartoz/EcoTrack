@@ -1,5 +1,5 @@
 export interface WasteType {
-  id: number;
+  id: string;
   code: string;
   name_id: string;
   emission_factor_kgco2e_per_kg: string | null;

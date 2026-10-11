@@ -33,12 +33,12 @@ export async function createNasabah(
   return http.post<Nasabah>("/api/nasabah/", payload);
 }
 
-export async function getNasabahDetail(id: number | string): Promise<Nasabah> {
+export async function getNasabahDetail(id: string): Promise<Nasabah> {
   return http.get<Nasabah>(`/api/nasabah/${id}/`);
 }
 
 export async function updateNasabah(
-  id: number | string,
+  id: string,
   payload: NasabahUpdatePayload,
 ): Promise<Nasabah> {
   return http.patch<Nasabah>(`/api/nasabah/${id}/`, payload);

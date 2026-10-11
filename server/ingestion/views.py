@@ -261,8 +261,8 @@ class UploadConfirmAllView(BankScopedMixin, APIView):
                         entity_id=deposit.id,
                         before={},
                         after={
-                            "nasabah_id": deposit.nasabah_id,
-                            "waste_type_id": deposit.waste_type_id,
+                            "nasabah_id": str(deposit.nasabah_id),
+                            "waste_type_id": str(deposit.waste_type_id),
                             "weight_kg": str(deposit.weight_kg),
                             "deposit_date": str(deposit.deposit_date),
                             "source": "confirmed",
@@ -488,8 +488,8 @@ class ExtractedRowConfirmView(BankScopedMixin, APIView):
                 entity_id=deposit.id,
                 before={},
                 after={
-                    "nasabah_id": deposit.nasabah_id,
-                    "waste_type_id": deposit.waste_type_id,
+                    "nasabah_id": str(deposit.nasabah_id),
+                    "waste_type_id": str(deposit.waste_type_id),
                     "weight_kg": str(deposit.weight_kg),
                     "deposit_date": str(deposit.deposit_date),
                     "source": "confirmed",

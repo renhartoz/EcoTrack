@@ -2,6 +2,7 @@ import re
 import unicodedata
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
+from typing import Any
 
 try:
     from rapidfuzz import fuzz, process
@@ -274,10 +275,10 @@ def parse_date(
 
 def match_waste_type(
     jenis_raw: str | None,
-    candidates: list[tuple[int, str, list[str]]],
+    candidates: list[tuple[Any, str, list[str]]],
     min_score: float = 0.75,
     ambiguity_margin: float = 0.05,
-) -> tuple[int | None, float, list[dict[str, str]]]:
+) -> tuple[Any | None, float, list[dict[str, str]]]:
     if not jenis_raw or not jenis_raw.strip():
         return None, 0.0, [{"code": "TYPE_UNKNOWN", "severity": "hard"}]
 
@@ -335,10 +336,10 @@ def match_waste_type(
 
 def match_nasabah(
     nama_raw: str | None,
-    nasabah_candidates: list[tuple[int, str]],
+    nasabah_candidates: list[tuple[Any, str]],
     min_score: float = 0.85,
     ambiguity_margin: float = 0.05,
-) -> tuple[int | None, float, list[dict[str, str]]]:
+) -> tuple[Any | None, float, list[dict[str, str]]]:
     if not nama_raw or not nama_raw.strip():
         return None, 0.0, [{"code": "NASABAH_UNKNOWN", "severity": "hard"}]
 

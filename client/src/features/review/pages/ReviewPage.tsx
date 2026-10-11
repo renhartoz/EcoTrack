@@ -42,7 +42,7 @@ export function ReviewPage() {
     queryFn: () => getWasteTypes(),
   });
 
-  const [activeRowId, setActiveRowId] = useState<number | null>(null);
+  const [activeRowId, setActiveRowId] = useState<string | null>(null);
   const [isAutoSavedExpanded, setIsAutoSavedExpanded] = useState(false);
   const [isConfirmAllDialogOpen, setIsConfirmAllDialogOpen] = useState(false);
   const [isConfirmingAll, setIsConfirmingAll] = useState(false);
@@ -123,7 +123,7 @@ export function ReviewPage() {
     confirmRows[0] ||
     upload.rows[0];
 
-  async function handleUpdateRow(rowId: number, fields: RowUpdatePayload) {
+  async function handleUpdateRow(rowId: string, fields: RowUpdatePayload) {
     setPageErrorMessage(null);
     const updated = await updateRow(rowId, fields);
     queryClient.setQueryData(["upload", id], (prev: typeof upload) => {
@@ -135,7 +135,7 @@ export function ReviewPage() {
     });
   }
 
-  async function handleConfirmRow(rowId: number) {
+  async function handleConfirmRow(rowId: string) {
     setPageErrorMessage(null);
     const updated = await confirmRow(rowId);
     queryClient.setQueryData(["upload", id], (prev: typeof upload) => {
@@ -147,7 +147,7 @@ export function ReviewPage() {
     });
   }
 
-  async function handleRejectRow(rowId: number) {
+  async function handleRejectRow(rowId: string) {
     setPageErrorMessage(null);
     const updated = await rejectRow(rowId);
     queryClient.setQueryData(["upload", id], (prev: typeof upload) => {
@@ -159,7 +159,7 @@ export function ReviewPage() {
     });
   }
 
-  async function handleRevertDeposit(depositId: number) {
+  async function handleRevertDeposit(depositId: string) {
     setPageErrorMessage(null);
     await deleteDeposit(depositId);
     await queryClient.invalidateQueries({ queryKey: ["upload", id] });

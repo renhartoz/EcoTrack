@@ -1,7 +1,14 @@
+import uuid
+
 from django.db import models
 
 
 class Deposit(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     bank_sampah = models.ForeignKey(
         "core.BankSampah",
         on_delete=models.CASCADE,
@@ -54,6 +61,11 @@ class Deposit(models.Model):
 
 
 class AuditLog(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     bank_sampah = models.ForeignKey(
         "core.BankSampah",
         on_delete=models.CASCADE,
@@ -82,7 +94,7 @@ class AuditLog(models.Model):
     entity_type = models.CharField(
         max_length=50,
     )
-    entity_id = models.IntegerField()
+    entity_id = models.UUIDField()
     before = models.JSONField(
         default=dict,
         blank=True,

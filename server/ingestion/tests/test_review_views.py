@@ -123,7 +123,7 @@ def test_row_patch_success(review_setup):
     data = res.json()
     assert data["human_edited"] is True
     assert data["route"] == "confirm"
-    assert data["normalized"]["nasabah_id"] == nasabah.id
+    assert data["normalized"]["nasabah_id"] == str(nasabah.id)
     assert not any(f["code"] == "NASABAH_UNKNOWN" for f in data["flags"])
 
 

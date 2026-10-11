@@ -25,16 +25,16 @@ import type { WasteType } from "@/types/wasteTypes";
 
 interface RowCardProps {
   row: ExtractedRow;
-  uploadId: string | number;
+  uploadId: string;
   sourceType: "image" | "text";
   nasabahList: Nasabah[];
   wasteTypes: WasteType[];
   isActive?: boolean;
   onFocus?: () => void;
-  onConfirm: (rowId: number) => Promise<void>;
-  onReject: (rowId: number) => Promise<void>;
-  onRevert?: (depositId: number) => Promise<void>;
-  onUpdate: (rowId: number, fields: RowUpdatePayload) => Promise<void>;
+  onConfirm: (rowId: string) => Promise<void>;
+  onReject: (rowId: string) => Promise<void>;
+  onRevert?: (depositId: string) => Promise<void>;
+  onUpdate: (rowId: string, fields: RowUpdatePayload) => Promise<void>;
   onCreateNasabah: (name: string) => Promise<Nasabah>;
 }
 
@@ -53,10 +53,10 @@ export function RowCard({
   onCreateNasabah,
 }: RowCardProps) {
   const [tanggal, setTanggal] = useState(row.normalized.tanggal || "");
-  const [nasabahId, setNasabahId] = useState<number | "">(
+  const [nasabahId, setNasabahId] = useState<string | "">(
     row.normalized.nasabah_id ?? "",
   );
-  const [wasteTypeId, setWasteTypeId] = useState<number | "">(
+  const [wasteTypeId, setWasteTypeId] = useState<string | "">(
     row.normalized.waste_type_id ?? "",
   );
   const [weightKg, setWeightKg] = useState(
@@ -93,8 +93,8 @@ export function RowCard({
     try {
       await onUpdate(row.id, {
         tanggal: tanggal || null,
-        nasabah_id: typeof nasabahId === "number" ? nasabahId : null,
-        waste_type_id: typeof wasteTypeId === "number" ? wasteTypeId : null,
+        nasabah_id: nasabahId ? nasabahId : null,
+        waste_type_id: wasteTypeId ? wasteTypeId : null,
         weight_kg: weightKg || null,
       });
     } catch (err) {
@@ -396,7 +396,7 @@ export function RowCard({
                   setIsAddingNasabah(true);
                   return;
                 }
-                setNasabahId(val ? parseInt(val, 10) : "");
+                setNasabahId(val || "");
               }}
               onBlur={handleFieldBlur}
               disabled={row.status !== "pending"}
@@ -429,7 +429,7 @@ export function RowCard({
             value={wasteTypeId}
             onChange={(e) => {
               const val = e.target.value;
-              setWasteTypeId(val ? parseInt(val, 10) : "");
+              setWasteTypeId(val || "");
             }}
             onBlur={handleFieldBlur}
             disabled={row.status !== "pending"}

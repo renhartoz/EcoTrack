@@ -45,8 +45,8 @@ class DepositSerializer(serializers.ModelSerializer):
 
 
 class DepositCreateSerializer(serializers.Serializer):
-    nasabah_id = serializers.IntegerField()
-    waste_type_id = serializers.IntegerField()
+    nasabah_id = serializers.UUIDField()
+    waste_type_id = serializers.UUIDField()
     weight_kg = serializers.DecimalField(max_digits=10, decimal_places=3)
     deposit_date = serializers.DateField()
 
@@ -80,8 +80,8 @@ class DepositCreateSerializer(serializers.Serializer):
 
 
 class DepositUpdateSerializer(serializers.Serializer):
-    nasabah_id = serializers.IntegerField(required=False)
-    waste_type_id = serializers.IntegerField(required=False)
+    nasabah_id = serializers.UUIDField(required=False)
+    waste_type_id = serializers.UUIDField(required=False)
     weight_kg = serializers.DecimalField(max_digits=10, decimal_places=3, required=False)
     deposit_date = serializers.DateField(required=False)
 

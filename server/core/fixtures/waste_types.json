@@ -1,7 +1,7 @@
 [
   {
     "model": "core.wastetype",
-    "pk": 1,
+    "pk": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
     "fields": {
       "code": "pet",
       "name_id": "Plastik PET (botol)",
@@ -14,52 +14,52 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 1,
+    "pk": "1ad3fc02-08aa-5281-b409-4b147c63fb06",
     "fields": {
-      "waste_type": 1,
+      "waste_type": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
       "alias_normalized": "botol",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 2,
+    "pk": "79b1bbe4-82ba-562b-915f-047cd04c09b3",
     "fields": {
-      "waste_type": 1,
+      "waste_type": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
       "alias_normalized": "botol plastik",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 3,
+    "pk": "cb361e70-d37b-55cb-b6b5-b66076692f00",
     "fields": {
-      "waste_type": 1,
+      "waste_type": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
       "alias_normalized": "pet",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 4,
+    "pk": "a6f18e81-567b-52cd-bc77-219a25e9de69",
     "fields": {
-      "waste_type": 1,
+      "waste_type": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
       "alias_normalized": "botol aqua",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 5,
+    "pk": "b3146624-5374-5cc6-8d05-b54ab2cfc4c8",
     "fields": {
-      "waste_type": 1,
+      "waste_type": "e264873c-7a99-5d3c-8b05-50a8bf1a23b3",
       "alias_normalized": "botol minum",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 2,
+    "pk": "8c2e0aff-5341-5c29-950b-332a7604f8ac",
     "fields": {
       "code": "plastik_campur",
       "name_id": "Plastik campur",
@@ -72,43 +72,43 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 6,
+    "pk": "305c1c9c-1792-5b96-b6e6-c0aee2e8ee86",
     "fields": {
-      "waste_type": 2,
+      "waste_type": "8c2e0aff-5341-5c29-950b-332a7604f8ac",
       "alias_normalized": "plastik",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 7,
+    "pk": "5963f90a-dadf-596a-851c-a67a10b3ed82",
     "fields": {
-      "waste_type": 2,
+      "waste_type": "8c2e0aff-5341-5c29-950b-332a7604f8ac",
       "alias_normalized": "plastik campur",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 8,
+    "pk": "7416b833-ac16-5d5a-96ba-9fb8f1868173",
     "fields": {
-      "waste_type": 2,
+      "waste_type": "8c2e0aff-5341-5c29-950b-332a7604f8ac",
       "alias_normalized": "gelas plastik",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 9,
+    "pk": "3f81d8f4-5268-52d8-be6f-00515c75f2e5",
     "fields": {
-      "waste_type": 2,
+      "waste_type": "8c2e0aff-5341-5c29-950b-332a7604f8ac",
       "alias_normalized": "kresek",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 3,
+    "pk": "d724f8e1-9de3-538c-a863-6bc4358b6feb",
     "fields": {
       "code": "kardus",
       "name_id": "Kardus",
@@ -121,34 +121,34 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 10,
+    "pk": "83431431-52e0-51f0-9993-600374e6f999",
     "fields": {
-      "waste_type": 3,
+      "waste_type": "d724f8e1-9de3-538c-a863-6bc4358b6feb",
       "alias_normalized": "kardus",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 11,
+    "pk": "10d4f918-07a9-5fc0-90eb-5056e1444889",
     "fields": {
-      "waste_type": 3,
+      "waste_type": "d724f8e1-9de3-538c-a863-6bc4358b6feb",
       "alias_normalized": "dus",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 12,
+    "pk": "3db09e7d-5efb-59a8-a5d1-9b7948f5c9f4",
     "fields": {
-      "waste_type": 3,
+      "waste_type": "d724f8e1-9de3-538c-a863-6bc4358b6feb",
       "alias_normalized": "karton",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 4,
+    "pk": "8728e7e4-dca6-5195-9571-b501bebfed95",
     "fields": {
       "code": "kertas",
       "name_id": "Kertas (HVS dan buku)",
@@ -161,43 +161,43 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 13,
+    "pk": "a2be5501-49d9-5e2d-9489-03b253c640a4",
     "fields": {
-      "waste_type": 4,
+      "waste_type": "8728e7e4-dca6-5195-9571-b501bebfed95",
       "alias_normalized": "kertas",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 14,
+    "pk": "dbb27de3-66cc-5202-836f-fe7cb3114e23",
     "fields": {
-      "waste_type": 4,
+      "waste_type": "8728e7e4-dca6-5195-9571-b501bebfed95",
       "alias_normalized": "hvs",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 15,
+    "pk": "45c3e8df-7ed2-5afa-8881-ef387c378e08",
     "fields": {
-      "waste_type": 4,
+      "waste_type": "8728e7e4-dca6-5195-9571-b501bebfed95",
       "alias_normalized": "buku",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 16,
+    "pk": "80378064-eb8f-5ec5-befd-6494a514566f",
     "fields": {
-      "waste_type": 4,
+      "waste_type": "8728e7e4-dca6-5195-9571-b501bebfed95",
       "alias_normalized": "kertas putih",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 5,
+    "pk": "9b0ab396-8a6e-5a56-ab55-bccaa08cc1d0",
     "fields": {
       "code": "koran",
       "name_id": "Koran dan majalah",
@@ -210,34 +210,34 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 17,
+    "pk": "29e3012b-0cc8-5b4f-8f9d-a45e87cd5ec0",
     "fields": {
-      "waste_type": 5,
+      "waste_type": "9b0ab396-8a6e-5a56-ab55-bccaa08cc1d0",
       "alias_normalized": "koran",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 18,
+    "pk": "56769d4b-5ba6-5311-a03f-4a4bbd4425e4",
     "fields": {
-      "waste_type": 5,
+      "waste_type": "9b0ab396-8a6e-5a56-ab55-bccaa08cc1d0",
       "alias_normalized": "majalah",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 19,
+    "pk": "309a8ab6-580f-51b7-898a-08eea4362dd3",
     "fields": {
-      "waste_type": 5,
+      "waste_type": "9b0ab396-8a6e-5a56-ab55-bccaa08cc1d0",
       "alias_normalized": "kertas koran",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 6,
+    "pk": "65d6a118-b967-51c7-ade0-a76d72eeb14e",
     "fields": {
       "code": "besi",
       "name_id": "Besi dan logam",
@@ -250,34 +250,34 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 20,
+    "pk": "b00ef385-9465-5bc4-9bce-644730865133",
     "fields": {
-      "waste_type": 6,
+      "waste_type": "65d6a118-b967-51c7-ade0-a76d72eeb14e",
       "alias_normalized": "besi",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 21,
+    "pk": "727b4fdb-0954-5a5b-af4a-a94444dc1db2",
     "fields": {
-      "waste_type": 6,
+      "waste_type": "65d6a118-b967-51c7-ade0-a76d72eeb14e",
       "alias_normalized": "logam",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 22,
+    "pk": "787accf2-a562-5aa6-9ed1-95888cb690a1",
     "fields": {
-      "waste_type": 6,
+      "waste_type": "65d6a118-b967-51c7-ade0-a76d72eeb14e",
       "alias_normalized": "besi tua",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 7,
+    "pk": "9ddd87c3-a808-57f1-985e-95cd8e6d07eb",
     "fields": {
       "code": "aluminium",
       "name_id": "Aluminium (kaleng)",
@@ -290,43 +290,43 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 23,
+    "pk": "123d0d46-ca3d-5683-b491-a6ef126304ac",
     "fields": {
-      "waste_type": 7,
+      "waste_type": "9ddd87c3-a808-57f1-985e-95cd8e6d07eb",
       "alias_normalized": "aluminium",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 24,
+    "pk": "8b2c031f-1dce-5044-ab4e-01f3fe35dc89",
     "fields": {
-      "waste_type": 7,
+      "waste_type": "9ddd87c3-a808-57f1-985e-95cd8e6d07eb",
       "alias_normalized": "alumunium",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 25,
+    "pk": "d2666c2c-82cf-5ce4-a066-2fd7a927b06a",
     "fields": {
-      "waste_type": 7,
+      "waste_type": "9ddd87c3-a808-57f1-985e-95cd8e6d07eb",
       "alias_normalized": "kaleng",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 26,
+    "pk": "7976baac-e305-56bb-a833-11d1960fda68",
     "fields": {
-      "waste_type": 7,
+      "waste_type": "9ddd87c3-a808-57f1-985e-95cd8e6d07eb",
       "alias_normalized": "kaleng minum",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetype",
-    "pk": 8,
+    "pk": "2ca28569-2a02-59ce-a2d1-20565b328aeb",
     "fields": {
       "code": "kaca",
       "name_id": "Kaca (botol kaca)",
@@ -339,27 +339,27 @@
   },
   {
     "model": "core.wastetypealias",
-    "pk": 27,
+    "pk": "dc39e0ed-e0f7-505b-adc2-e1691c0a85d2",
     "fields": {
-      "waste_type": 8,
+      "waste_type": "2ca28569-2a02-59ce-a2d1-20565b328aeb",
       "alias_normalized": "kaca",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 28,
+    "pk": "777d7a7b-76ef-5545-9799-39bca4f9e903",
     "fields": {
-      "waste_type": 8,
+      "waste_type": "2ca28569-2a02-59ce-a2d1-20565b328aeb",
       "alias_normalized": "beling",
       "created_at": "2026-10-06T00:00:00Z"
     }
   },
   {
     "model": "core.wastetypealias",
-    "pk": 29,
+    "pk": "8af0a85a-e18a-5d92-9573-0a65fc34583a",
     "fields": {
-      "waste_type": 8,
+      "waste_type": "2ca28569-2a02-59ce-a2d1-20565b328aeb",
       "alias_normalized": "botol kaca",
       "created_at": "2026-10-06T00:00:00Z"
     }

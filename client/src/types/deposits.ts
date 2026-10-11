@@ -1,13 +1,13 @@
 export type DepositSource = "auto" | "confirmed" | "manual";
 
 export interface Deposit {
-  id: number;
+  id: string;
   nasabah: {
-    id: number;
+    id: string;
     name: string;
   };
   waste_type: {
-    id: number;
+    id: string;
     code: string;
     name_id: string;
   };
@@ -19,8 +19,8 @@ export interface Deposit {
 }
 
 export interface DepositCreatePayload {
-  nasabah_id: number;
-  waste_type_id: number;
+  nasabah_id: string;
+  waste_type_id: string;
   weight_kg: string;
   deposit_date: string;
 }
@@ -33,8 +33,8 @@ export interface DepositUpdatePayload {
 export interface DepositFilterParams {
   from?: string;
   to?: string;
-  nasabah?: number;
-  waste_type?: number;
+  nasabah?: string;
+  waste_type?: string;
   source?: DepositSource;
   page?: number;
   page_size?: number;

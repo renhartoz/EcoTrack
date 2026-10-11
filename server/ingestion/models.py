@@ -68,6 +68,11 @@ class Upload(models.Model):
 
 
 class UploadImage(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     upload = models.OneToOneField(
         Upload,
         on_delete=models.CASCADE,
@@ -84,6 +89,11 @@ class UploadImage(models.Model):
 
 
 class Extraction(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     upload = models.ForeignKey(
         Upload,
         on_delete=models.CASCADE,
@@ -143,6 +153,11 @@ class Extraction(models.Model):
 
 
 class ExtractedRow(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     upload = models.ForeignKey(
         Upload,
         on_delete=models.CASCADE,
@@ -273,6 +288,11 @@ class ExtractedRow(models.Model):
 
 
 class ProviderCache(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     key = models.CharField(
         max_length=64,
         unique=True,

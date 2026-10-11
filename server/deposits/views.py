@@ -87,8 +87,8 @@ class DepositListCreateView(BankScopedMixin, APIView):
                 entity_id=deposit.id,
                 before={},
                 after={
-                    "nasabah_id": deposit.nasabah_id,
-                    "waste_type_id": deposit.waste_type_id,
+                    "nasabah_id": str(deposit.nasabah_id),
+                    "waste_type_id": str(deposit.waste_type_id),
                     "weight_kg": str(deposit.weight_kg),
                     "deposit_date": str(deposit.deposit_date),
                     "source": deposit.source,
@@ -117,8 +117,8 @@ class DepositDetailView(BankScopedMixin, APIView):
             data = serializer.validated_data
 
             before_state = {
-                "nasabah_id": deposit.nasabah_id,
-                "waste_type_id": deposit.waste_type_id,
+                "nasabah_id": str(deposit.nasabah_id),
+                "waste_type_id": str(deposit.waste_type_id),
                 "weight_kg": str(deposit.weight_kg),
                 "deposit_date": str(deposit.deposit_date),
             }
@@ -135,8 +135,8 @@ class DepositDetailView(BankScopedMixin, APIView):
             deposit.save()
 
             after_state = {
-                "nasabah_id": deposit.nasabah_id,
-                "waste_type_id": deposit.waste_type_id,
+                "nasabah_id": str(deposit.nasabah_id),
+                "waste_type_id": str(deposit.waste_type_id),
                 "weight_kg": str(deposit.weight_kg),
                 "deposit_date": str(deposit.deposit_date),
             }

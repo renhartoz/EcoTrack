@@ -35,7 +35,7 @@ def create_demo_account(
     password: str | None = None,
     bank_name: str | None = None,
 ) -> tuple[User, str]:
-    waste_types = list(WasteType.objects.filter(is_active=True).order_by("id"))
+    waste_types = list(WasteType.objects.filter(is_active=True).order_by("code"))
     if not waste_types:
         raise ValueError("No active waste types found. Load waste types fixture first.")
 

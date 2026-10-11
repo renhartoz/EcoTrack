@@ -7,7 +7,7 @@ import type { ExtractedRow } from "@/types/uploads";
 
 function createMockRow(overrides: Partial<ExtractedRow> = {}): ExtractedRow {
   return {
-    id: 1,
+    id: "row-1",
     row_index: 0,
     status: "pending",
     route: "confirm",
@@ -23,8 +23,8 @@ function createMockRow(overrides: Partial<ExtractedRow> = {}): ExtractedRow {
     },
     normalized: {
       tanggal: "2026-09-12",
-      nasabah_id: 1,
-      waste_type_id: 2,
+      nasabah_id: "nasabah-1",
+      waste_type_id: "waste-2",
       weight_kg: "2.500",
     },
     evidence: {

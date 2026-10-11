@@ -36,7 +36,7 @@ class Command(BaseCommand):
     help = "Seed deterministic demo bank, operator, nasabah, and 3 months of synthetic deposits."
 
     def handle(self, *args, **options):
-        waste_types = list(WasteType.objects.filter(is_active=True).order_by("id"))
+        waste_types = list(WasteType.objects.filter(is_active=True).order_by("code"))
         if not waste_types:
             raise CommandError("No active waste types found. Run loaddata waste_types first.")
 

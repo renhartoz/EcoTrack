@@ -1,5 +1,5 @@
 export interface Nasabah {
-  id: number;
+  id: string;
   name: string;
   normalized_name: string;
   is_active: boolean;

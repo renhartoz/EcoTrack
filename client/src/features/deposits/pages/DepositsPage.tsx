@@ -44,7 +44,7 @@ export function DepositsPage() {
   const [editWeightKg, setEditWeightKg] = useState("");
   const [editDate, setEditDate] = useState("");
 
-  const [deletingDepositId, setDeletingDepositId] = useState<number | null>(
+  const [deletingDepositId, setDeletingDepositId] = useState<string | null>(
     null,
   );
   const [actionError, setActionError] = useState<string | null>(null);
@@ -53,8 +53,8 @@ export function DepositsPage() {
   const filterParams = {
     from: filterFrom || undefined,
     to: filterTo || undefined,
-    nasabah: filterNasabah ? parseInt(filterNasabah, 10) : undefined,
-    waste_type: filterWasteType ? parseInt(filterWasteType, 10) : undefined,
+    nasabah: filterNasabah || undefined,
+    waste_type: filterWasteType || undefined,
     source: (filterSource as DepositSource) || undefined,
     page_size: 100,
   };
@@ -94,7 +94,7 @@ export function DepositsPage() {
       id,
       payload,
     }: {
-      id: number;
+      id: string;
       payload: { weight_kg?: string; deposit_date?: string };
     }) => updateDeposit(id, payload),
     onSuccess: () => {
@@ -108,7 +108,7 @@ export function DepositsPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteDeposit(id),
+    mutationFn: (id: string) => deleteDeposit(id),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["deposits"] });
       setDeletingDepositId(null);
@@ -153,8 +153,8 @@ export function DepositsPage() {
       return;
     }
     createMutation.mutate({
-      nasabah_id: parseInt(newNasabahId, 10),
-      waste_type_id: parseInt(newWasteTypeId, 10),
+      nasabah_id: newNasabahId,
+      waste_type_id: newWasteTypeId,
       weight_kg: parsedWeight.toFixed(3),
       deposit_date: newDate,
     });

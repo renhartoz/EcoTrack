@@ -112,8 +112,8 @@ class ExtractedRowSerializer(serializers.ModelSerializer):
 
 class ExtractedRowUpdateSerializer(serializers.Serializer):
     tanggal = serializers.DateField(required=False, allow_null=True)
-    nasabah_id = serializers.IntegerField(required=False, allow_null=True)
-    waste_type_id = serializers.IntegerField(required=False, allow_null=True)
+    nasabah_id = serializers.UUIDField(required=False, allow_null=True)
+    waste_type_id = serializers.UUIDField(required=False, allow_null=True)
     weight_kg = serializers.DecimalField(
         max_digits=10, decimal_places=3, required=False, allow_null=True
     )

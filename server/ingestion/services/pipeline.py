@@ -276,8 +276,8 @@ def process_upload(upload_id: uuid.UUID | str) -> Upload:
                     after={
                         "weight_kg": str(deposit.weight_kg),
                         "deposit_date": str(deposit.deposit_date),
-                        "nasabah_id": deposit.nasabah_id,
-                        "waste_type_id": deposit.waste_type_id,
+                        "nasabah_id": str(deposit.nasabah_id),
+                        "waste_type_id": str(deposit.waste_type_id),
                     },
                 )
                 status = "saved"
