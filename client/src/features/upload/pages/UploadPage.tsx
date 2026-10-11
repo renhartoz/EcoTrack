@@ -181,7 +181,7 @@ export function UploadPage() {
           aria-selected={activeTab === "photo"}
           onClick={() => setActiveTab("photo")}
           disabled={isProcessing}
-          className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 border-b-2 font-medium text-sm transition-colors ${
+          className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 border-b-2 font-medium text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout ${
             activeTab === "photo"
               ? "border-sprout text-sprout font-semibold"
               : "border-transparent text-muted-foreground hover:text-ink"
@@ -196,7 +196,7 @@ export function UploadPage() {
           aria-selected={activeTab === "text"}
           onClick={() => setActiveTab("text")}
           disabled={isProcessing}
-          className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 border-b-2 font-medium text-sm transition-colors ${
+          className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 border-b-2 font-medium text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout ${
             activeTab === "text"
               ? "border-sprout text-sprout font-semibold"
               : "border-transparent text-muted-foreground hover:text-ink"
@@ -229,7 +229,7 @@ export function UploadPage() {
               type="button"
               onClick={() => void handleRetry()}
               disabled={isProcessing}
-              className="flex min-h-[44px] items-center gap-2 rounded-sm bg-brick px-4 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="flex min-h-[44px] items-center gap-2 rounded-sm bg-brick px-4 py-2 font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-brick"
             >
               <RotateCw className="h-4 w-4" />
               <span>{UI_STRINGS.retryButton}</span>
@@ -285,7 +285,7 @@ export function UploadPage() {
               type="button"
               disabled={isProcessing}
               onClick={() => cameraInputRef.current?.click()}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex min-h-[44px] items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <Camera className="h-4 w-4" />
               <span>{UI_STRINGS.capturePhoto}</span>
@@ -294,7 +294,7 @@ export function UploadPage() {
               type="button"
               disabled={isProcessing}
               onClick={() => galleryInputRef.current?.click()}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-sm border border-input-border bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex min-h-[44px] items-center justify-center gap-2 rounded-sm border border-input-border bg-paper px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <ImageIcon className="h-4 w-4" />
               <span>{UI_STRINGS.selectGallery}</span>
@@ -314,7 +314,7 @@ export function UploadPage() {
                 type="button"
                 disabled={isProcessing}
                 onClick={() => void handlePhotoUpload()}
-                className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-sprout"
               >
                 <UploadCloud className="h-4 w-4" />
                 <span>Mulai Proses Ekstraksi</span>
@@ -339,7 +339,7 @@ export function UploadPage() {
           <button
             type="submit"
             disabled={isProcessing || !textInput.trim()}
-            className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-sprout"
           >
             <FileText className="h-4 w-4" />
             <span>{UI_STRINGS.submitText}</span>

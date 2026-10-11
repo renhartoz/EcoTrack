@@ -98,7 +98,7 @@ function UploadHistoryRow({ upload }: { upload: UploadListItem }) {
 
         <Link
           to={`/uploads/${upload.id}`}
-          className="flex min-h-[36px] items-center gap-1 rounded-sm border border-rule px-3 py-1 text-xs font-medium text-ink transition-colors hover:bg-muted"
+          className="flex min-h-[44px] items-center gap-1 rounded-sm border border-rule px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
         >
           <span>Tinjau</span>
           <ChevronRight className="h-3.5 w-3.5" />

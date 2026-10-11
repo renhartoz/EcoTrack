@@ -127,10 +127,9 @@ export function DashboardPage() {
       {summary && (
         <div className="space-y-6">
           {summary.is_demo && (
-            <div
+            <output
               id="demo-banner"
-              role="status"
-              className="flex items-start gap-3 rounded-sm border border-amber/60 bg-paper p-4 text-ink"
+              className="block flex items-start gap-3 rounded-sm border border-amber/60 bg-paper p-4 text-ink"
             >
               <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber" />
               <div>
@@ -141,7 +140,7 @@ export function DashboardPage() {
                   {UI_STRINGS.demoBannerText}
                 </p>
               </div>
-            </div>
+            </output>
           )}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

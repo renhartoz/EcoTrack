@@ -149,4 +149,3 @@ export const UI_STRINGS = {
   judgeAccessDesc:
     "Mulai evaluasi instan dengan data simulasi 3 bulan tanpa perlu pengaturan CLI.",
 } as const;
-

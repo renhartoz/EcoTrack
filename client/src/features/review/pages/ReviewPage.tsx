@@ -221,7 +221,7 @@ export function ReviewPage() {
           type="button"
           onClick={() => setIsConfirmAllDialogOpen(true)}
           disabled={eligibleForConfirmAll.length === 0}
-          className="flex min-h-[44px] items-center gap-2 rounded-sm bg-sprout px-4 py-2 font-medium text-sm text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex min-h-[44px] items-center gap-2 rounded-sm bg-sprout px-4 py-2 font-medium text-sm text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
         >
           <CheckCheck className="h-4 w-4" />
           <span>Konfirmasi semua ({eligibleForConfirmAll.length})</span>
@@ -241,7 +241,7 @@ export function ReviewPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-md space-y-4 rounded-sm border border-rule bg-paper p-6 shadow-md">
             <h3 className="font-bold text-lg text-ink">
@@ -257,7 +257,7 @@ export function ReviewPage() {
                 type="button"
                 onClick={() => setIsConfirmAllDialogOpen(false)}
                 disabled={isConfirmingAll}
-                className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-sm font-medium text-ink hover:bg-muted"
+                className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-sm font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 {UI_STRINGS.cancelButton}
               </button>
@@ -265,7 +265,7 @@ export function ReviewPage() {
                 type="button"
                 onClick={() => void handleConfirmAllSubmit()}
                 disabled={isConfirmingAll}
-                className="flex min-h-[44px] items-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
+                className="flex min-h-[44px] items-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 {isConfirmingAll && (
                   <RotateCw className="h-4 w-4 animate-spin" />
@@ -380,7 +380,7 @@ export function ReviewPage() {
               <button
                 type="button"
                 onClick={() => setIsAutoSavedExpanded((prev) => !prev)}
-                className="flex min-h-[44px] w-full items-center justify-between p-3 font-semibold text-sm text-sprout transition-colors hover:bg-muted/30"
+                className="flex min-h-[44px] w-full items-center justify-between p-3 font-semibold text-sm text-sprout transition-colors hover:bg-muted/30 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <div className="flex items-center gap-2">
                   <span>{UI_STRINGS.autoSavedSectionTitle}</span>

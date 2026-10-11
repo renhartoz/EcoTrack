@@ -136,7 +136,7 @@ export function NasabahPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder={UI_STRINGS.searchNasabahPlaceholder}
-          className="min-h-[44px] w-full rounded-sm border border-input bg-paper pr-4 pl-9 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+          className="min-h-[44px] w-full rounded-sm border border-input bg-paper pr-4 pl-9 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
         />
       </div>
 
@@ -210,7 +210,7 @@ export function NasabahPage() {
                     setEditingNasabah(nasabah);
                     setEditName(nasabah.name);
                   }}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-sm border border-rule px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-muted"
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-rule px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   <Edit2 className="h-3.5 w-3.5" />
                   <span>{UI_STRINGS.renameButton}</span>
@@ -224,7 +224,7 @@ export function NasabahPage() {
                     })
                   }
                   disabled={toggleActiveMutation.isPending}
-                  className={`flex min-h-[40px] items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`flex min-h-[44px] items-center gap-1.5 rounded-sm border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-sprout outline-none ${
                     nasabah.is_active
                       ? "border-rule text-muted-foreground hover:bg-muted"
                       : "border-sprout/30 bg-sprout/10 text-sprout hover:bg-sprout/20"
@@ -246,7 +246,7 @@ export function NasabahPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-md rounded-sm border border-rule bg-paper p-6 shadow-lg">
             <div className="flex items-center justify-between border-b border-rule pb-3">
@@ -257,7 +257,7 @@ export function NasabahPage() {
                 type="button"
                 onClick={() => setIsAddOpen(false)}
                 aria-label={UI_STRINGS.cancelButton}
-                className="rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -278,21 +278,21 @@ export function NasabahPage() {
                   placeholder="Contoh: Siti Aminah"
                   required
                   autoFocus
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setIsAddOpen(false)}
-                  className="min-h-[40px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted"
+                  className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   {UI_STRINGS.cancelButton}
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending || !newName.trim()}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   <Check className="h-3.5 w-3.5" />
                   <span>{UI_STRINGS.saveButton}</span>
@@ -307,7 +307,7 @@ export function NasabahPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-md rounded-sm border border-rule bg-paper p-6 shadow-lg">
             <div className="flex items-center justify-between border-b border-rule pb-3">
@@ -318,7 +318,7 @@ export function NasabahPage() {
                 type="button"
                 onClick={() => setEditingNasabah(null)}
                 aria-label={UI_STRINGS.cancelButton}
-                className="rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -338,21 +338,21 @@ export function NasabahPage() {
                   onChange={(e) => setEditName(e.target.value)}
                   required
                   autoFocus
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setEditingNasabah(null)}
-                  className="min-h-[40px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted"
+                  className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   {UI_STRINGS.cancelButton}
                 </button>
                 <button
                   type="submit"
                   disabled={renameMutation.isPending || !editName.trim()}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   <Check className="h-3.5 w-3.5" />
                   <span>{UI_STRINGS.saveButton}</span>

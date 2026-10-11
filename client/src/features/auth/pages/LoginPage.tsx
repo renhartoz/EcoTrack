@@ -168,7 +168,8 @@ export function LoginPage() {
                 <span>Kendali Operator</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Tiga lajur perutean terkalibrasi dengan bukti fisik berdampingan.
+                Tiga lajur perutean terkalibrasi dengan bukti fisik
+                berdampingan.
               </p>
             </div>
 
@@ -178,7 +179,8 @@ export function LoginPage() {
                 <span>Kalkulasi KLHK</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Faktor emisi terverifikasi dihitung langsung di database PostgreSQL.
+                Faktor emisi terverifikasi dihitung langsung di database
+                PostgreSQL.
               </p>
             </div>
           </div>
@@ -246,10 +248,14 @@ export function LoginPage() {
                 {showCustomDemo && (
                   <div className="mt-2 space-y-2 pt-1 text-xs">
                     <div>
-                      <label className="block text-[11px] text-muted-foreground">
+                      <label
+                        htmlFor="custom-judge-username"
+                        className="block text-[11px] text-muted-foreground"
+                      >
                         Nama Pengguna Juri (Opsional)
                       </label>
                       <input
+                        id="custom-judge-username"
                         type="text"
                         value={customJudgeUsername}
                         onChange={(e) => setCustomJudgeUsername(e.target.value)}
@@ -258,10 +264,14 @@ export function LoginPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] text-muted-foreground">
+                      <label
+                        htmlFor="custom-bank-name"
+                        className="block text-[11px] text-muted-foreground"
+                      >
                         Nama Bank Sampah (Opsional)
                       </label>
                       <input
+                        id="custom-bank-name"
                         type="text"
                         value={customBankName}
                         onChange={(e) => setCustomBankName(e.target.value)}

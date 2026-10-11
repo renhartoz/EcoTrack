@@ -182,7 +182,7 @@ export function RowCard({
       onFocus={onFocus}
       className={`space-y-4 rounded-sm border bg-paper p-4 transition-all ${
         isActive
-          ? "border-sprout ring-1 ring-sprout shadow-sm"
+          ? "border-sprout ring-1 ring-sprout"
           : "border-rule hover:border-input-border"
       }`}
     >
@@ -224,20 +224,22 @@ export function RowCard({
           )}
         </div>
         {row.human_edited && (
-          <span className="text-muted-foreground italic text-[11px]">
+          <span className="text-[11px] italic text-muted-foreground">
             Diedit operator
           </span>
         )}
       </div>
 
-      <div>
-        <div className="mb-1 text-[11px] font-medium text-muted-foreground uppercase">
-          {UI_STRINGS.rawSourceLabel}
+      <div className="overflow-hidden rounded-sm border border-rule bg-paper">
+        <div className="flex items-center justify-between border-b border-rule bg-paper px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span>{UI_STRINGS.rawSourceLabel}</span>
+          <span className="font-mono text-ink">Baris #{row.row_index + 1}</span>
         </div>
+
         {sourceType === "image" ? (
           crop.isValid ? (
             <div
-              className="h-20 w-full overflow-hidden rounded-sm border border-rule bg-muted/20"
+              className="h-24 w-full overflow-hidden border-b border-rule bg-paper"
               style={{
                 backgroundImage: `url(${imageUrl})`,
                 backgroundPosition: crop.backgroundPosition,
@@ -247,7 +249,7 @@ export function RowCard({
               title="Potongan tulisan buku kas"
             />
           ) : (
-            <div className="flex h-16 w-full items-center justify-between rounded-sm border border-rule bg-muted/20 px-3 text-xs text-muted-foreground">
+            <div className="flex h-16 w-full items-center justify-between border-b border-rule bg-paper px-3 text-xs text-muted-foreground">
               <span>Gambar penuh (posisi koordinat tidak tersedia)</span>
               <span className="font-mono text-ink">
                 Baris #{row.row_index + 1}
@@ -255,23 +257,51 @@ export function RowCard({
             </div>
           )
         ) : (
-          <div className="rounded-sm border border-rule bg-muted/15 p-2 font-mono text-xs text-ink">
+          <div className="border-b border-rule bg-paper p-3 font-mono text-xs text-ink">
             {row.raw.evidence_text || "-"}
           </div>
         )}
-        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          <span>Tgl: {row.raw.tanggal || "-"}</span>
-          <span>Nama: {row.raw.nama || "-"}</span>
-          <span>Jenis: {row.raw.jenis || "-"}</span>
-          <span>
-            Berat: {row.raw.berat || "-"} {row.raw.satuan || ""}
-          </span>
-          {row.raw.evidence_text && (
-            <span className="w-full font-mono text-ink">
-              {row.raw.evidence_text}
+
+        <div className="grid grid-cols-2 divide-x divide-rule bg-paper text-xs sm:grid-cols-4">
+          <div className="p-2">
+            <span className="block text-[10px] uppercase text-muted-foreground">
+              Tgl Fisik
             </span>
-          )}
+            <span className="font-mono font-medium text-ink tabular-nums">
+              {row.raw.tanggal || "-"}
+            </span>
+          </div>
+          <div className="p-2">
+            <span className="block text-[10px] uppercase text-muted-foreground">
+              Nama Fisik
+            </span>
+            <span className="font-mono font-medium text-ink">
+              {row.raw.nama || "-"}
+            </span>
+          </div>
+          <div className="p-2">
+            <span className="block text-[10px] uppercase text-muted-foreground">
+              Jenis Fisik
+            </span>
+            <span className="font-mono font-medium text-ink">
+              {row.raw.jenis || "-"}
+            </span>
+          </div>
+          <div className="p-2">
+            <span className="block text-[10px] uppercase text-muted-foreground">
+              Berat Fisik
+            </span>
+            <span className="font-mono font-medium text-ink tabular-nums">
+              {row.raw.berat || "-"} {row.raw.satuan || ""}
+            </span>
+          </div>
         </div>
+
+        {row.raw.evidence_text && (
+          <div className="border-t border-rule bg-paper px-3 py-1.5 font-mono text-[11px] text-muted-foreground">
+            {row.raw.evidence_text}
+          </div>
+        )}
       </div>
 
       {row.flags.length > 0 && (
@@ -322,7 +352,7 @@ export function RowCard({
             onBlur={handleFieldBlur}
             onKeyDown={handleKeyDown}
             disabled={row.status !== "pending"}
-            className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-1 focus-visible:ring-sprout disabled:opacity-60"
+            className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-2 focus-visible:ring-sprout disabled:opacity-60"
           />
         </div>
 
@@ -337,14 +367,14 @@ export function RowCard({
                 placeholder="Nama baru..."
                 value={newNasabahName}
                 onChange={(e) => setNewNasabahName(e.target.value)}
-                className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2 py-1 text-xs text-ink outline-none focus-visible:ring-1 focus-visible:ring-sprout"
+                className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2 py-1 text-xs text-ink outline-none focus-visible:ring-2 focus-visible:ring-sprout"
               />
               <button
                 type="button"
                 onClick={() => void handleCreateNasabahSubmit()}
                 disabled={isSubmittingNasabah || !newNasabahName.trim()}
                 aria-label={UI_STRINGS.saveButton}
-                className="flex min-h-[44px] items-center rounded-sm bg-sprout px-2 text-white hover:opacity-90 disabled:opacity-50"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm bg-sprout px-2 text-white hover:opacity-90 focus-visible:ring-2 focus-visible:ring-sprout outline-none disabled:opacity-50"
               >
                 <Check className="h-4 w-4" />
               </button>
@@ -352,7 +382,7 @@ export function RowCard({
                 type="button"
                 onClick={() => setIsAddingNasabah(false)}
                 aria-label={UI_STRINGS.cancelButton}
-                className="flex min-h-[44px] items-center rounded-sm border border-rule px-2 text-ink hover:bg-muted"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-rule px-2 text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-ink outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -370,7 +400,7 @@ export function RowCard({
               }}
               onBlur={handleFieldBlur}
               disabled={row.status !== "pending"}
-              className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-1 focus-visible:ring-sprout disabled:opacity-60"
+              className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-2 focus-visible:ring-sprout disabled:opacity-60"
             >
               <option value="">Pilih Nasabah...</option>
               {nasabahList
@@ -403,7 +433,7 @@ export function RowCard({
             }}
             onBlur={handleFieldBlur}
             disabled={row.status !== "pending"}
-            className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-1 focus-visible:ring-sprout disabled:opacity-60"
+            className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper px-2.5 py-1.5 text-xs text-ink outline-none focus-visible:ring-2 focus-visible:ring-sprout disabled:opacity-60"
           >
             <option value="">Pilih Jenis Sampah...</option>
             {wasteTypes.map((w) => (
@@ -428,7 +458,7 @@ export function RowCard({
               onKeyDown={handleKeyDown}
               disabled={row.status !== "pending"}
               placeholder="0.000"
-              className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper pr-8 pl-2.5 py-1.5 font-mono text-xs text-ink outline-none focus-visible:ring-1 focus-visible:ring-sprout disabled:opacity-60"
+              className="w-full min-h-[44px] rounded-sm border border-input-border bg-paper pr-8 pl-2.5 py-1.5 font-mono text-xs text-ink outline-none focus-visible:ring-2 focus-visible:ring-sprout disabled:opacity-60"
             />
             <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-xs text-muted-foreground">
               kg
@@ -444,7 +474,7 @@ export function RowCard({
               type="button"
               onClick={() => void handleRejectClick()}
               disabled={isActing}
-              className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-brick/40 px-3 py-1.5 text-xs font-medium text-brick transition-colors hover:bg-brick/10 disabled:opacity-50"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-brick/40 px-3 py-1.5 text-xs font-medium text-brick transition-colors hover:bg-brick/10 focus-visible:ring-2 focus-visible:ring-brick outline-none disabled:opacity-50"
             >
               <X className="h-3.5 w-3.5" />
               <span>{UI_STRINGS.rejectRowButton}</span>
@@ -458,7 +488,7 @@ export function RowCard({
                   ? "Selesaikan kesalahan kolom sebelum mengonfirmasi"
                   : "Simpan baris sebagai setoran"
               }
-              className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-sprout outline-none disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Check className="h-3.5 w-3.5" />
               <span>{UI_STRINGS.confirmRowButton}</span>
@@ -471,7 +501,7 @@ export function RowCard({
             type="button"
             onClick={() => void handleRevertClick()}
             disabled={isActing}
-            className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-rule px-3 py-1.5 text-xs font-medium text-brick transition-colors hover:bg-brick/10 disabled:opacity-50"
+            className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-rule px-3 py-1.5 text-xs font-medium text-brick transition-colors hover:bg-brick/10 focus-visible:ring-2 focus-visible:ring-brick outline-none disabled:opacity-50"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span>{UI_STRINGS.cancelAutoSavedButton}</span>

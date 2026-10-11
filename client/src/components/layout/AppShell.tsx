@@ -61,7 +61,7 @@ export function AppShell() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex min-h-[44px] items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+                  className={`flex min-h-[44px] items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout ${
                     active
                       ? "border-l-2 border-sprout bg-muted font-semibold text-sprout"
                       : "text-ink hover:bg-muted/60"
@@ -84,7 +84,7 @@ export function AppShell() {
           <button
             type="button"
             onClick={() => void logout()}
-            className="flex min-h-[44px] w-full items-center gap-3 rounded-sm px-3 py-2 text-sm text-brick transition-colors hover:bg-muted/60"
+            className="flex min-h-[44px] w-full items-center gap-3 rounded-sm px-3 py-2 text-sm text-brick transition-colors hover:bg-muted/60 outline-none focus-visible:ring-2 focus-visible:ring-brick"
           >
             <LogOut className="h-4 w-4" />
             <span>{UI_STRINGS.logoutButton}</span>
@@ -104,7 +104,7 @@ export function AppShell() {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex min-h-[48px] flex-1 flex-col items-center justify-center gap-1 py-1 text-[11px] transition-colors ${
+              className={`flex min-h-[48px] flex-1 flex-col items-center justify-center gap-1 py-1 text-[11px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout ${
                 active ? "font-semibold text-sprout" : "text-muted-foreground"
               }`}
             >

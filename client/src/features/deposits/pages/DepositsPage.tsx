@@ -271,7 +271,7 @@ export function DepositsPage() {
               type="date"
               value={filterFrom}
               onChange={(e) => setFilterFrom(e.target.value)}
-              className="mt-1 min-h-[40px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors focus:border-sprout focus:outline-hidden"
+              className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             />
           </div>
 
@@ -287,7 +287,7 @@ export function DepositsPage() {
               type="date"
               value={filterTo}
               onChange={(e) => setFilterTo(e.target.value)}
-              className="mt-1 min-h-[40px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors focus:border-sprout focus:outline-hidden"
+              className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             />
           </div>
 
@@ -302,7 +302,7 @@ export function DepositsPage() {
               id="filter-nasabah"
               value={filterNasabah}
               onChange={(e) => setFilterNasabah(e.target.value)}
-              className="mt-1 min-h-[40px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors focus:border-sprout focus:outline-hidden"
+              className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <option value="">Semua Nasabah</option>
               {nasabahList.map((n) => (
@@ -324,7 +324,7 @@ export function DepositsPage() {
               id="filter-type"
               value={filterWasteType}
               onChange={(e) => setFilterWasteType(e.target.value)}
-              className="mt-1 min-h-[40px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors focus:border-sprout focus:outline-hidden"
+              className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <option value="">Semua Jenis</option>
               {wasteTypes.map((w) => (
@@ -346,7 +346,7 @@ export function DepositsPage() {
               id="filter-source"
               value={filterSource}
               onChange={(e) => setFilterSource(e.target.value)}
-              className="mt-1 min-h-[40px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors focus:border-sprout focus:outline-hidden"
+              className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-2.5 text-xs text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <option value="">{UI_STRINGS.filterAllSources}</option>
               <option value="auto">{UI_STRINGS.sourceAuto}</option>
@@ -402,7 +402,7 @@ export function DepositsPage() {
                   </td>
                   <td className="p-3 text-ink">{deposit.nasabah.name}</td>
                   <td className="p-3 text-ink">{deposit.waste_type.name_id}</td>
-                  <td className="p-3 text-right font-mono font-semibold text-ink">
+                  <td className="p-3 text-right font-mono font-semibold text-ink tabular-nums">
                     {formatWeight(deposit.weight_kg)}
                   </td>
                   <td className="p-3">{getSourceBadge(deposit.source)}</td>
@@ -417,7 +417,7 @@ export function DepositsPage() {
                           setEditDate(deposit.deposit_date);
                         }}
                         aria-label={UI_STRINGS.editButton}
-                        className="rounded-sm p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-ink"
+                        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                         title={UI_STRINGS.editButton}
                       >
                         <Edit2 className="h-4 w-4" />
@@ -426,7 +426,7 @@ export function DepositsPage() {
                         type="button"
                         onClick={() => setDeletingDepositId(deposit.id)}
                         aria-label={UI_STRINGS.deleteButton}
-                        className="rounded-sm p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-brick"
+                        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-brick focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                         title={UI_STRINGS.deleteButton}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -444,7 +444,7 @@ export function DepositsPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-md rounded-sm border border-rule bg-paper p-6 shadow-lg">
             <div className="flex items-center justify-between border-b border-rule pb-3">
@@ -455,7 +455,7 @@ export function DepositsPage() {
                 type="button"
                 onClick={() => setIsAddOpen(false)}
                 aria-label={UI_STRINGS.cancelButton}
-                className="rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -474,7 +474,7 @@ export function DepositsPage() {
                   value={newDate}
                   onChange={(e) => setNewDate(e.target.value)}
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
 
@@ -490,7 +490,7 @@ export function DepositsPage() {
                   value={newNasabahId}
                   onChange={(e) => setNewNasabahId(e.target.value)}
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 >
                   <option value="">Pilih Nasabah</option>
                   {nasabahList
@@ -515,7 +515,7 @@ export function DepositsPage() {
                   value={newWasteTypeId}
                   onChange={(e) => setNewWasteTypeId(e.target.value)}
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 >
                   <option value="">Pilih Jenis Sampah</option>
                   {wasteTypes
@@ -543,7 +543,7 @@ export function DepositsPage() {
                   onChange={(e) => setNewWeightKg(e.target.value)}
                   placeholder="Contoh: 2.500"
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
 
@@ -551,14 +551,14 @@ export function DepositsPage() {
                 <button
                   type="button"
                   onClick={() => setIsAddOpen(false)}
-                  className="min-h-[40px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted"
+                  className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   {UI_STRINGS.cancelButton}
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   <Check className="h-3.5 w-3.5" />
                   <span>{UI_STRINGS.saveButton}</span>
@@ -573,7 +573,7 @@ export function DepositsPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-md rounded-sm border border-rule bg-paper p-6 shadow-lg">
             <div className="flex items-center justify-between border-b border-rule pb-3">
@@ -584,7 +584,7 @@ export function DepositsPage() {
                 type="button"
                 onClick={() => setEditingDeposit(null)}
                 aria-label={UI_STRINGS.cancelButton}
-                className="rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -603,7 +603,7 @@ export function DepositsPage() {
                   value={editDate}
                   onChange={(e) => setEditDate(e.target.value)}
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
 
@@ -621,7 +621,7 @@ export function DepositsPage() {
                   value={editWeightKg}
                   onChange={(e) => setEditWeightKg(e.target.value)}
                   required
-                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors focus:border-sprout focus:outline-hidden"
+                  className="mt-1 min-h-[44px] w-full rounded-sm border border-input bg-paper px-3 text-sm text-ink transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sprout"
                 />
               </div>
 
@@ -629,14 +629,14 @@ export function DepositsPage() {
                 <button
                   type="button"
                   onClick={() => setEditingDeposit(null)}
-                  className="min-h-[40px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted"
+                  className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   {UI_STRINGS.cancelButton}
                 </button>
                 <button
                   type="submit"
                   disabled={updateMutation.isPending}
-                  className="flex min-h-[40px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-sprout px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
                 >
                   <Check className="h-3.5 w-3.5" />
                   <span>{UI_STRINGS.saveButton}</span>
@@ -651,7 +651,7 @@ export function DepositsPage() {
         <dialog
           open
           aria-modal="true"
-          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-black/40 p-4"
+          className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/50 p-4"
         >
           <div className="w-full max-w-sm rounded-sm border border-rule bg-paper p-6 shadow-lg">
             <h3 className="font-bold text-base text-ink">Hapus Setoran</h3>
@@ -663,7 +663,7 @@ export function DepositsPage() {
               <button
                 type="button"
                 onClick={() => setDeletingDepositId(null)}
-                className="min-h-[40px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted"
+                className="min-h-[44px] rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 {UI_STRINGS.cancelButton}
               </button>
@@ -671,7 +671,7 @@ export function DepositsPage() {
                 type="button"
                 onClick={() => deleteMutation.mutate(deletingDepositId)}
                 disabled={deleteMutation.isPending}
-                className="flex min-h-[40px] items-center gap-1.5 rounded-sm bg-brick px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="flex min-h-[44px] items-center gap-1.5 rounded-sm bg-brick px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 <span>{UI_STRINGS.deleteButton}</span>
