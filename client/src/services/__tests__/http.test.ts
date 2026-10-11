@@ -126,6 +126,9 @@ describe("http client", () => {
     await expect(http.post("/api/auth/logout/", {})).rejects.toBeInstanceOf(
       ApiError,
     );
+    await expect(
+      http.post("/api/auth/register-demo/", {}),
+    ).rejects.toBeInstanceOf(ApiError);
 
     const refreshCalls = fetchMock.mock.calls.filter(
       (c) => c[0] === "/api/auth/refresh/",
