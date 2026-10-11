@@ -9,7 +9,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.authentication import enforce_csrf
 from accounts.models import User
-from accounts.serializers import LoginSerializer, UserSummarySerializer
+from accounts.serializers import (
+    LoginSerializer,
+    RegisterDemoSerializer,
+    UserSummarySerializer,
+)
+from core.services.demo import create_demo_account
 from core.throttling import LoginRateThrottle
 
 
@@ -150,5 +155,41 @@ class MeView(APIView):
             UserSummarySerializer(request.user).data,
             status=status.HTTP_200_OK,
         )
+        set_csrf_cookie(request, response)
+        return response
+
+
+class RegisterDemoView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = RegisterDemoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        username = serializer.validated_data.get("username")
+        password = serializer.validated_data.get("password")
+        bank_name = serializer.validated_data.get("bank_name")
+
+        user, raw_password = create_demo_account(
+            username=username,
+            password=password,
+            bank_name=bank_name,
+        )
+
+        refresh = RefreshToken.for_user(user)
+        access = str(refresh.access_token)
+
+        response = Response(
+            {
+                "user": UserSummarySerializer(user).data,
+                "credentials": {
+                    "username": user.username,
+                    "password": raw_password,
+                },
+            },
+            status=status.HTTP_201_CREATED,
+        )
+        set_auth_cookies(response, access, str(refresh))
         set_csrf_cookie(request, response)
         return response
