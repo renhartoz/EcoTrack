@@ -22,3 +22,27 @@ export async function logoutRequest(): Promise<void> {
 export async function getMeRequest(): Promise<User> {
   return http.get<User>("/api/auth/me/");
 }
+
+export interface RegisterDemoPayload {
+  username?: string;
+  password?: string;
+  bank_name?: string;
+}
+
+export interface RegisterDemoResponse {
+  user: User;
+  credentials: {
+    username: string;
+    password: string;
+  };
+}
+
+export async function registerDemoRequest(
+  payload?: RegisterDemoPayload,
+): Promise<RegisterDemoResponse> {
+  return http.post<RegisterDemoResponse>(
+    "/api/auth/register-demo/",
+    payload ?? {},
+  );
+}
+

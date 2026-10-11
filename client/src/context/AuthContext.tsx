@@ -7,13 +7,20 @@ import {
 } from "react";
 import type { LoginCredentials, User } from "@/types/auth";
 import { setUnauthorizedHandler } from "@/services/http";
-import { getMeRequest, loginRequest, logoutRequest } from "@/services/auth";
+import {
+  getMeRequest,
+  loginRequest,
+  logoutRequest,
+  registerDemoRequest,
+  type RegisterDemoPayload,
+} from "@/services/auth";
 
 interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
+  registerDemo: (payload?: RegisterDemoPayload) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -61,6 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(loggedInUser);
   }
 
+  async function registerDemo(payload?: RegisterDemoPayload): Promise<void> {
+    const response = await registerDemoRequest(payload);
+    setUser(response.user);
+  }
+
   async function logout(): Promise<void> {
     try {
       await logoutRequest();
@@ -76,6 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         isLoading,
         login,
+        registerDemo,
         logout,
       }}
     >
