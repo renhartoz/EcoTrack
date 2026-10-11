@@ -125,6 +125,10 @@ class ExtractedRowUpdateSerializer(serializers.Serializer):
 
 
 class UploadDetailSerializer(serializers.ModelSerializer):
+    strategy = serializers.SerializerMethodField()
+    ocr_engine = serializers.SerializerMethodField()
+    input_tokens = serializers.SerializerMethodField()
+    output_tokens = serializers.SerializerMethodField()
     page = serializers.SerializerMethodField()
     counts = serializers.SerializerMethodField()
     rows = serializers.SerializerMethodField()
@@ -135,6 +139,10 @@ class UploadDetailSerializer(serializers.ModelSerializer):
             "id",
             "source_type",
             "status",
+            "strategy",
+            "ocr_engine",
+            "input_tokens",
+            "output_tokens",
             "source_sha256",
             "created_at",
             "processing_started_at",
@@ -145,10 +153,31 @@ class UploadDetailSerializer(serializers.ModelSerializer):
             "error_message",
         ]
 
+    def _get_latest_extraction(self, obj):
+        if not hasattr(obj, "_cached_latest_extraction"):
+            obj._cached_latest_extraction = obj.extractions.order_by("-created_at").first()
+        return obj._cached_latest_extraction
+
+    def get_strategy(self, obj):
+        ext = self._get_latest_extraction(obj)
+        return ext.strategy if ext else None
+
+    def get_ocr_engine(self, obj):
+        ext = self._get_latest_extraction(obj)
+        return ext.ocr_engine if ext else None
+
+    def get_input_tokens(self, obj):
+        ext = self._get_latest_extraction(obj)
+        return ext.input_tokens if ext else None
+
+    def get_output_tokens(self, obj):
+        ext = self._get_latest_extraction(obj)
+        return ext.output_tokens if ext else None
+
     def get_page(self, obj):
-        latest_extraction = obj.extractions.order_by("-created_at").first()
-        if latest_extraction and latest_extraction.page_meta:
-            return latest_extraction.page_meta
+        ext = self._get_latest_extraction(obj)
+        if ext and ext.page_meta:
+            return ext.page_meta
         return None
 
     def get_counts(self, obj):

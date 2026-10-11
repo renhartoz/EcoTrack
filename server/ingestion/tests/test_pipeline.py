@@ -7,6 +7,8 @@ from PIL import Image
 from accounts.models import User
 from core.models import BankSampah
 from ingestion.models import Upload, UploadImage
+from ingestion.serializers import UploadDetailSerializer
+from ingestion.services.ocr_client import OcrApiError, OcrSpaceClient
 from ingestion.services.pipeline import process_upload
 from ingestion.services.strategies import (
     OcrTextStrategy,
@@ -132,3 +134,82 @@ def test_pipeline_reprocess_replaces_pending_rows_only(bank_and_user):
     assert upload.rows.filter(status="saved").count() == 1
     assert upload.rows.filter(status="pending").count() == 10
     assert upload.rows.count() == 11
+
+
+@pytest.mark.django_db
+def test_pipeline_ocr_text_strategy_ignores_failing_vision(bank_and_user, monkeypatch, settings):
+    settings.EXTRACTION_STRATEGY = "ocr_text"
+
+    def fake_vision_extract(*args, **kwargs):
+        raise RuntimeError("Vision should never be called when strategy is ocr_text")
+
+    monkeypatch.setattr(VisionStrategy, "extract", fake_vision_extract)
+
+    bank, user = bank_and_user
+    upload = Upload.objects.create(
+        bank_sampah=bank,
+        created_by=user,
+        source_type="image",
+        image_sha256="img-sha-ocr-test",
+        status="processing",
+    )
+    call_command("loaddata", "core/fixtures/waste_types.json")
+    UploadImage.objects.create(
+        upload=upload,
+        content_type="image/jpeg",
+        data=create_sample_jpeg(),
+    )
+
+    result = process_upload(upload.id)
+    assert result.status == "ready"
+    assert result.error_code is None
+
+    latest_extraction = result.extractions.order_by("-created_at").first()
+    assert latest_extraction is not None
+    assert latest_extraction.strategy == "ocr_text"
+
+    serializer = UploadDetailSerializer(result)
+    assert serializer.data["strategy"] == "ocr_text"
+    assert serializer.data["ocr_engine"] == "3"
+    assert serializer.data["input_tokens"] is not None
+    assert serializer.data["output_tokens"] is not None
+
+
+@pytest.mark.django_db
+def test_pipeline_ocr_failure_does_not_fallback_to_vision(bank_and_user, monkeypatch, settings):
+    settings.EXTRACTION_STRATEGY = "ocr_text"
+
+    def fake_vision_extract(*args, **kwargs):
+        raise RuntimeError("Vision should never be called as fallback")
+
+    def fake_ocr_read(*args, **kwargs):
+        raise OcrApiError("Simulated OCR failure")
+
+    monkeypatch.setattr(VisionStrategy, "extract", fake_vision_extract)
+    monkeypatch.setattr(OcrSpaceClient, "read", fake_ocr_read)
+
+    bank, user = bank_and_user
+    upload = Upload.objects.create(
+        bank_sampah=bank,
+        created_by=user,
+        source_type="image",
+        image_sha256="img-sha-ocr-fail",
+        status="processing",
+    )
+    UploadImage.objects.create(
+        upload=upload,
+        content_type="image/jpeg",
+        data=create_sample_jpeg(),
+    )
+
+    result = process_upload(upload.id)
+    assert result.status == "failed"
+    assert result.error_code == "OCR_API_ERROR"
+    assert "Simulated OCR failure" in (result.error_message or "")
+
+    serializer = UploadDetailSerializer(result)
+    assert serializer.data["strategy"] is None
+    assert serializer.data["ocr_engine"] is None
+    assert serializer.data["input_tokens"] is None
+    assert serializer.data["output_tokens"] is None
+    assert serializer.data["error_code"] == "OCR_API_ERROR"
