@@ -216,9 +216,11 @@ class UploadConfirmAllView(BankScopedMixin, APIView):
     def post(self, request, pk):
         bank = self.get_bank()
         with transaction.atomic():
-            upload = self.get_scoped_object_or_404(Upload.objects.select_for_update(), pk=pk)
-            pending_rows = (
-                upload.rows.select_for_update().filter(status="pending").order_by("row_index")
+            upload = self.get_scoped_object_or_404(Upload, pk=pk)
+            pending_rows = list(
+                ExtractedRow.objects.select_for_update()
+                .filter(upload=upload, status="pending")
+                .order_by("row_index")
             )
 
             confirmed_count = 0

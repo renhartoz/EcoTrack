@@ -60,6 +60,16 @@ DATABASES = {
 }
 DATABASES["default"]["CONN_MAX_AGE"] = 0
 DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
+DATABASES["default"].setdefault("OPTIONS", {})
+DATABASES["default"]["OPTIONS"].update(
+    {
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 10,
+        "keepalives_count": 5,
+    }
+)
 
 CACHES = {
     "default": {
