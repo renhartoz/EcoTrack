@@ -1,4 +1,10 @@
-import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { useNavigate } from "react-router";
 import {
   Camera,
@@ -7,6 +13,7 @@ import {
   Image as ImageIcon,
   RotateCw,
   UploadCloud,
+  X,
 } from "lucide-react";
 import { computeSha256Hex, resizeImageToJpeg } from "@/lib/image";
 import { ERROR_MESSAGES, UI_STRINGS, type ErrorCode } from "@/lib/strings.id";
@@ -30,6 +37,83 @@ export function UploadPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [failedUploadId, setFailedUploadId] = useState<number | null>(null);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    setIsCameraActive(false);
+  };
+
+  const startCamera = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      cameraInputRef.current?.click();
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: "environment" },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+        },
+      });
+      streamRef.current = stream;
+      setIsCameraActive(true);
+      setErrorMessage(null);
+    } catch {
+      cameraInputRef.current?.click();
+    }
+  };
+
+  useEffect(() => {
+    if (isCameraActive && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      void videoRef.current.play();
+    }
+  }, [isCameraActive]);
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  const capturePhoto = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        const file = new File([blob], `ledger_camera_${Date.now()}.jpg`, {
+          type: "image/jpeg",
+        });
+        setSelectedFile(file);
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl);
+        }
+        setPreviewUrl(URL.createObjectURL(file));
+        stopCamera();
+      },
+      "image/jpeg",
+      0.95,
+    );
+  };
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -284,7 +368,7 @@ export function UploadPage() {
             <button
               type="button"
               disabled={isProcessing}
-              onClick={() => cameraInputRef.current?.click()}
+              onClick={() => void startCamera()}
               className="flex min-h-[44px] items-center justify-center gap-2 rounded-sm bg-sprout px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-sprout"
             >
               <Camera className="h-4 w-4" />
@@ -300,6 +384,64 @@ export function UploadPage() {
               <span>{UI_STRINGS.selectGallery}</span>
             </button>
           </div>
+
+          {isCameraActive && (
+            <dialog
+              open
+              aria-modal="true"
+              className="fixed inset-0 z-50 flex h-full w-full max-h-none max-w-none items-center justify-center border-none bg-ink/75 p-4"
+            >
+              <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-sm border border-rule bg-paper shadow-2xl">
+                <div className="flex items-center justify-between border-b border-rule p-3">
+                  <div className="flex items-center gap-2 font-semibold text-sm text-ink">
+                    <Camera className="h-4 w-4 text-sprout" />
+                    <span>Kamera Buku Kas</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={stopCamera}
+                    aria-label={UI_STRINGS.cancelButton}
+                    className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm text-muted-foreground hover:bg-muted hover:text-ink focus-visible:ring-2 focus-visible:ring-sprout outline-none"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="relative aspect-4/3 w-full overflow-hidden bg-ink">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="pointer-events-none absolute inset-6 rounded-sm border-2 border-dashed border-white/70 shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]">
+                    <span className="absolute top-2 left-2 rounded-sm bg-ink/70 px-2 py-0.5 text-[11px] font-medium text-white">
+                      Arahkan kamera tegak lurus di atas buku kas
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 border-t border-rule bg-paper p-4">
+                  <button
+                    type="button"
+                    onClick={stopCamera}
+                    className="flex min-h-[44px] items-center gap-1.5 rounded-sm border border-rule px-4 py-2 text-xs font-medium text-ink hover:bg-muted focus-visible:ring-2 focus-visible:ring-sprout outline-none"
+                  >
+                    <span>{UI_STRINGS.cancelButton}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={capturePhoto}
+                    className="flex min-h-[44px] items-center gap-2 rounded-sm bg-sprout px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-sprout outline-none"
+                  >
+                    <Camera className="h-4 w-4" />
+                    <span>Ambil Foto</span>
+                  </button>
+                </div>
+              </div>
+            </dialog>
+          )}
 
           {previewUrl && (
             <div className="space-y-4 rounded-sm border border-rule p-4">
