@@ -58,7 +58,7 @@ export interface ExtractedRow {
 }
 
 export interface UploadDetail {
-  id: number;
+  id: string;
   source_type: UploadSourceType;
   status: UploadStatus;
   source_sha256: string | null;
@@ -72,7 +72,7 @@ export interface UploadDetail {
 }
 
 export interface UploadListItem {
-  id: number;
+  id: string;
   source_type: UploadSourceType;
   status: UploadStatus;
   created_at: string;

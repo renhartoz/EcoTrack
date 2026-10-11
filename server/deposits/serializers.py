@@ -22,7 +22,7 @@ class DepositSerializer(serializers.ModelSerializer):
     nasabah = NasabahNestedSerializer(read_only=True)
     waste_type = WasteTypeNestedSerializer(read_only=True)
     weight_kg = serializers.SerializerMethodField()
-    upload_id = serializers.IntegerField(source="upload.id", allow_null=True, read_only=True)
+    upload_id = serializers.UUIDField(source="upload.id", allow_null=True, read_only=True)
 
     class Meta:
         model = Deposit

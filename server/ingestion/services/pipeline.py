@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
@@ -33,7 +35,7 @@ from ingestion.services.strategies import (
 from ingestion.services.validate import validate_page_rows
 
 
-def process_upload(upload_id: int) -> Upload:
+def process_upload(upload_id: uuid.UUID | str) -> Upload:
     upload = Upload.objects.get(id=upload_id)
     upload.processing_started_at = timezone.now()
     upload.status = "processing"

@@ -25,7 +25,7 @@ import type { WasteType } from "@/types/wasteTypes";
 
 interface RowCardProps {
   row: ExtractedRow;
-  uploadId: number;
+  uploadId: string | number;
   sourceType: "image" | "text";
   nasabahList: Nasabah[];
   wasteTypes: WasteType[];

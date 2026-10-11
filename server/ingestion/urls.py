@@ -15,11 +15,11 @@ from ingestion.views import (
 urlpatterns = [
     path("uploads/", UploadListCreateView.as_view(), name="upload-list-create"),
     path("uploads/text/", UploadTextView.as_view(), name="upload-text"),
-    path("uploads/<int:pk>/", UploadDetailView.as_view(), name="upload-detail"),
-    path("uploads/<int:pk>/image/", UploadImageView.as_view(), name="upload-image"),
-    path("uploads/<int:pk>/retry/", UploadRetryView.as_view(), name="upload-retry"),
+    path("uploads/<uuid:pk>/", UploadDetailView.as_view(), name="upload-detail"),
+    path("uploads/<uuid:pk>/image/", UploadImageView.as_view(), name="upload-image"),
+    path("uploads/<uuid:pk>/retry/", UploadRetryView.as_view(), name="upload-retry"),
     path(
-        "uploads/<int:pk>/confirm-all/",
+        "uploads/<uuid:pk>/confirm-all/",
         UploadConfirmAllView.as_view(),
         name="upload-confirm-all",
     ),

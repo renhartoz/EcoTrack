@@ -14,7 +14,7 @@ export interface Deposit {
   weight_kg: string;
   deposit_date: string;
   source: DepositSource;
-  upload_id: number | null;
+  upload_id: string | null;
   created_at: string;
 }
 
