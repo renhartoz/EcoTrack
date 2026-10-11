@@ -11,8 +11,8 @@ from django.db import transaction
 from django.utils import timezone
 
 from core.models import BankSampah, Nasabah, WasteType
-from core.services.text import normalize_text
 from deposits.models import Deposit
+from ingestion.services.normalize import normalize_text
 
 JAKARTA_TZ = ZoneInfo("Asia/Jakarta")
 
