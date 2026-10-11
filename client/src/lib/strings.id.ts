@@ -128,4 +128,25 @@ export const UI_STRINGS = {
   cancelButton: "Batal",
   deleteButton: "Hapus",
   editButton: "Ubah",
+  demoBannerTitle: "Data demo",
+  demoBannerText:
+    "Bank sampah ini menggunakan data demo untuk evaluasi hackathon. Semua angka, nasabah, dan setoran adalah data simulasi.",
+  dashboardTotalsTitle: "Ringkasan Operasional",
+  dashboardWeightLabel: "Total Berat",
+  dashboardCo2eLabel: "Estimasi Pengurangan Emisi",
+  dashboardDepositsLabel: "Total Setoran",
+  dashboardNasabahLabel: "Nasabah Aktif",
+  pipelineTitle: "Kesehatan Pipeline",
+  pipelineAutoRate: "Diproses Otomatis",
+  pipelineCorrectionRate: "Perlu Koreksi",
+  pipelinePending: "Menunggu Konfirmasi",
+  byTypeTitle: "Rincian Jenis Sampah",
+  monthlyTitle: "Tren Bulanan",
+  missingFactorNotice:
+    "Beberapa jenis sampah belum memiliki faktor emisi dan tidak dihitung dalam estimasi CO2e:",
+  judgeAccessTitle: "Akses Juri Hackathon",
+  judgeAccessButton: "Buat Akun Demo & Masuk Otomatis",
+  judgeAccessDesc:
+    "Mulai evaluasi instan dengan data simulasi 3 bulan tanpa perlu pengaturan CLI.",
 } as const;
+
