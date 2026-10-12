@@ -1,6 +1,9 @@
 from django.urls import include, path
 
+from core.views import RootView
+
 urlpatterns = [
+    path("", RootView.as_view(), name="root"),
     path("api/auth/", include("accounts.urls")),
     path("api/", include("core.urls")),
     path("api/", include("ingestion.urls")),

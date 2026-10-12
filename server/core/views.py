@@ -19,6 +19,20 @@ class HealthView(APIView):
         return Response({"status": "ok"})
 
 
+class RootView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response(
+            {
+                "status": "ok",
+                "service": "EcoTrack API",
+                "health": "/api/health/",
+            }
+        )
+
+
 class StandardPagination(PageNumberPagination):
     page_size = 20
     page_size_query_param = "page_size"

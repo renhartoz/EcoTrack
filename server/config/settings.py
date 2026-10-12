@@ -17,11 +17,22 @@ DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
-    default=["localhost", "127.0.0.1", ".vercel.app", "ecotrack-server.vercel.app"],
+    default=[
+        "localhost",
+        "127.0.0.1",
+        ".vercel.app",
+        "ecotrack-server.vercel.app",
+        "ecotrack-server-sooty.vercel.app",
+    ],
 )
 CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS",
-    default=["http://localhost:5173", "https://ecotrack.vercel.app", "https://*.vercel.app"],
+    default=[
+        "http://localhost:5173",
+        "https://ecotrack.vercel.app",
+        "https://*.vercel.app",
+        "https://ecotrack-server-sooty.vercel.app",
+    ],
 )
 
 DJANGO_APPS = [

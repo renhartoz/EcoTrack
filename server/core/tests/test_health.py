@@ -39,3 +39,11 @@ def test_health_check_with_stale_access_cookie_succeeds(api_client, operator_use
     response = api_client.get("/api/health/")
     assert response.status_code == status.HTTP_200_OK
     assert response.data == {"status": "ok"}
+
+
+def test_root_url_returns_200_ok(api_client):
+    response = api_client.get("/")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data["status"] == "ok"
+    assert response.data["service"] == "EcoTrack API"
+    assert response.data["health"] == "/api/health/"
