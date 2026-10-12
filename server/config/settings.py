@@ -32,6 +32,7 @@ CSRF_TRUSTED_ORIGINS = env.list(
         "https://ecotrack.vercel.app",
         "https://*.vercel.app",
         "https://ecotrack-server-sooty.vercel.app",
+        "https://ecotrack-wheat.vercel.app",
     ],
 )
 

@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://ecotrack-server-sooty.vercel.app/api/:path*"
+      "source": "/api",
+      "destination": "https://ecotrack-server-sooty.vercel.app/api/"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://ecotrack-server-sooty.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
