@@ -53,7 +53,8 @@ export type ErrorCode = keyof typeof ERROR_MESSAGES;
 export const UI_STRINGS = {
   appTitle: "EcoTrack",
   loginTitle: "Masuk ke EcoTrack",
-  loginSubtitle: "Kelola setoran bank sampah dengan cepat dan akurat",
+  loginSubtitle:
+    "Digitalisasi pencatatan sampah non-organik: pasar tradisional, UMKM kuliner, & rumah tangga",
   usernameLabel: "Nama pengguna",
   passwordLabel: "Kata sandi",
   loginButton: "Masuk",
@@ -81,7 +82,7 @@ export const UI_STRINGS = {
   uploadProcessing: "Membaca halaman, biasanya 5 sampai 15 detik.",
   retryButton: "Coba lagi",
   textPlaceholder:
-    "Contoh:\n12/9 Bu Siti botol 2,5 kg\n12/9 Pak Joko kardus 5 kg",
+    "Contoh:\n02/10 Warung Bu Siti minyak jelantah 5 liter\n02/10 Kios Pak Hendra kardus 12 kg\n02/10 Ibu Sri botol 3,5 kg",
   uploadHistoryTitle: "Riwayat Unggahan",
   reviewTitle: "Tinjau Hasil Ekstraksi",
   noUploadsYet: "Belum ada riwayat unggahan",
@@ -130,7 +131,7 @@ export const UI_STRINGS = {
   editButton: "Ubah",
   demoBannerTitle: "Data demo",
   demoBannerText:
-    "Bank sampah ini menggunakan data demo untuk evaluasi hackathon. Semua angka, nasabah, dan setoran adalah data simulasi.",
+    "Bank sampah percontohan ini mengelola limbah sampah non-organik dari pedagang pasar tradisional, UMKM kuliner, dan warga rumah tangga.",
   dashboardTotalsTitle: "Ringkasan Operasional",
   dashboardWeightLabel: "Total Berat",
   dashboardCo2eLabel: "Estimasi Pengurangan Emisi",
@@ -147,5 +148,5 @@ export const UI_STRINGS = {
   judgeAccessTitle: "Akses Juri Hackathon",
   judgeAccessButton: "Buat Akun Demo & Masuk Otomatis",
   judgeAccessDesc:
-    "Mulai evaluasi instan dengan data simulasi 3 bulan tanpa perlu pengaturan CLI.",
+    "Mulai evaluasi instan studi kasus pengelolaan sampah non-organik lintas sektor dengan data simulasi 3 bulan.",
 } as const;

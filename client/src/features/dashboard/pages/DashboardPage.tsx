@@ -58,7 +58,8 @@ export function DashboardPage() {
             {UI_STRINGS.navDashboard}
           </h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Ringkasan operasional setoran sampah dan estimasi dampak lingkungan.
+            Pengelolaan sampah non-organik (Pasar Tradisional, UMKM Kuliner,
+            Rumah Tangga) dan estimasi emisi.
           </p>
         </div>
 

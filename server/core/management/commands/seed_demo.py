@@ -17,18 +17,18 @@ from ingestion.services.normalize import normalize_text
 JAKARTA_TZ = ZoneInfo("Asia/Jakarta")
 
 FICTIONAL_NASABAH = [
-    "Budi Santoso",
-    "Siti Aminah",
-    "Agus Setiawan",
-    "Dewi Lestari",
-    "Eko Prasetyo",
-    "Rina Wulandari",
-    "Joko Widodo",
-    "Sri Wahyuni",
-    "Hendra Kurniawan",
-    "Tri Handayani",
-    "Bambang Pamungkas",
-    "Endang Susilowati",
+    "Kios Sayur Pak Hendra (Pasar)",
+    "Lapak Bumbu Bu Endang (Pasar)",
+    "Toko Buah Pak Bambang (Pasar)",
+    "Kios Plastik Mas Eko (Pasar)",
+    "Warung Makan Bu Siti (UMKM)",
+    "Kedai Kopi Mas Agus (UMKM)",
+    "Bakso Solo Pak Joko (UMKM)",
+    "Dapur Gorengan Mbak Rina (UMKM)",
+    "Ibu Sri Wahyuni (Rumah Tangga)",
+    "Bpk. Budi Santoso (Rumah Tangga)",
+    "Ibu Tri Handayani (Rumah Tangga)",
+    "Keluarga Dewi Lestari (Rumah Tangga)",
 ]
 
 

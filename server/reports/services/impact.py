@@ -44,11 +44,15 @@ def build_narrative_template(
     co2e_kg = figures["co2e_kg"]
 
     if deposit_count == 0:
-        text = f"Pada periode {month_name} {year}, belum ada setoran sampah yang tercatat."
+        text = (
+            f"Pada periode {month_name} {year}, belum ada setoran sampah non-organik yang tercatat."
+        )
     else:
         text = (
             f"Pada periode {month_name} {year}, Bank Sampah mencatat {deposit_count} setoran "
-            f"dari {active_nasabah} nasabah aktif dengan total berat sampah {weight_kg} kg."
+            f"sampah non-organik dari {active_nasabah} nasabah aktif lintas sektor "
+            "(pasar tradisional, UMKM kuliner, dan rumah tangga) "
+            f"dengan total berat {weight_kg} kg yang berhasil dialihkan dari pembuangan terbuka."
         )
         if Decimal(co2e_kg) > Decimal("0.000"):
             text += f" Estimasi pengurangan emisi gas rumah kaca mencapai {co2e_kg} kg CO2e."

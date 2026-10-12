@@ -106,15 +106,19 @@ export function LoginPage() {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-1.5 rounded-sm bg-sprout/10 px-2.5 py-1 text-xs font-semibold text-sprout">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Transkripsi Cerdas & Pelaporan Emisi</span>
+              <span>Subtema Sustainability · Solusi Sampah Non-Organik</span>
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
               Ubah Catatan Tangan Menjadi Data Dampak Nyata.
             </h1>
             <p className="text-base text-muted-foreground sm:text-lg">
-              Solusi berbasis AI untuk pengelola bank sampah di Indonesia: foto
-              halaman buku kas fisik, verifikasi hasil pembacaan, dan hasilkan
-              laporan emisi gas rumah kaca berbasis data sah.
+              Solusi digitalisasi sampah non-organik untuk bank sampah yang
+              mengelola limbah dari{" "}
+              <strong className="text-ink">pasar tradisional</strong>,{" "}
+              <strong className="text-ink">UMKM kuliner</strong>, dan{" "}
+              <strong className="text-ink">rumah tangga</strong>: foto catatan
+              tangan fisik, verifikasi hasil AI cerdas, dan pantau reduksi emisi
+              GRK untuk mencegah pencemaran lingkungan.
             </p>
           </div>
 
@@ -125,27 +129,27 @@ export function LoginPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="rounded-sm border border-rule bg-muted/20 p-3">
                 <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-                  <span>Buku Kas Fisik</span>
+                  <span>Buku Kas Fisik (UMKM / Pasar / Warga)</span>
                   <FileSpreadsheet className="h-3.5 w-3.5" />
                 </div>
                 <div className="mt-2 font-mono text-sm font-semibold text-ink">
-                  12/9 Bu Siti botol 2,5 kg
+                  02/10 Warung Bu Siti jelantah 5 liter
                 </div>
                 <div className="mt-1 text-[11px] text-muted-foreground">
-                  Tulisan tangan & coretan diperiksa
+                  Tulisan tangan & satuan tak baku diverifikasi
                 </div>
               </div>
 
               <div className="rounded-sm border border-sprout/40 bg-sprout/5 p-3">
                 <div className="flex items-center justify-between text-xs font-medium text-sprout">
-                  <span>Data Terstruktur & Emisi</span>
+                  <span>Data Terstruktur & Emisi Sah</span>
                   <CheckCircle2 className="h-3.5 w-3.5" />
                 </div>
                 <div className="mt-2 font-mono text-sm font-semibold text-ink">
-                  Siti Aminah · PET · 2.500 kg
+                  Warung Bu Siti (UMKM) · Jelantah · 5.000 kg
                 </div>
                 <div className="mt-1 font-semibold text-[11px] text-sprout tabular-nums">
-                  Estimasi CO2e: 2.000 kg CO2e
+                  Terdivergensi dari pencemaran air & selokan
                 </div>
               </div>
             </div>
@@ -155,32 +159,32 @@ export function LoginPage() {
             <div className="rounded-sm border border-rule bg-paper p-3">
               <div className="flex items-center gap-1.5 font-bold text-xs text-ink">
                 <ShieldCheck className="h-4 w-4 text-sprout" />
-                <span>Multi-Modal AI</span>
+                <span>Pasar Tradisional</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Vision & OCR cerdas mendeteksi angka revisi dan satuan implisit.
+                Digitalisasi timbulan kardus sayur/buah & plastik kresek
+                pedagang pasar.
               </p>
             </div>
 
             <div className="rounded-sm border border-rule bg-paper p-3">
               <div className="flex items-center gap-1.5 font-bold text-xs text-ink">
                 <UserCheck className="h-4 w-4 text-sprout" />
-                <span>Kendali Operator</span>
+                <span>UMKM Kuliner</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Tiga lajur perutean terkalibrasi dengan bukti fisik
-                berdampingan.
+                Pencatatan minyak jelantah, jerigen, kaleng, dan kemasan makanan
+                warung.
               </p>
             </div>
 
             <div className="rounded-sm border border-rule bg-paper p-3">
               <div className="flex items-center gap-1.5 font-bold text-xs text-ink">
                 <Scale className="h-4 w-4 text-sprout" />
-                <span>Kalkulasi KLHK</span>
+                <span>Rumah Tangga</span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Faktor emisi terverifikasi dihitung langsung di database
-                PostgreSQL.
+                Pencatatan botol PET, kardus paket, dan kertas warga perumahan.
               </p>
             </div>
           </div>

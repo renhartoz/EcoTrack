@@ -57,8 +57,8 @@ export function ReportsPage() {
             {UI_STRINGS.navReports}
           </h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Kalkulasi otomatis dampak lingkungan dan reduksi emisi karbon
-            berbasis data setoran.
+            Kalkulasi otomatis dampak lingkungan limbah non-organik (Pasar, UMKM
+            Kuliner, Rumah Tangga).
           </p>
         </div>
 

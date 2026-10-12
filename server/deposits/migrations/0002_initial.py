@@ -5,24 +5,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('core', '0001_initial'),
-        ('deposits', '0001_initial'),
-        ('ingestion', '0001_initial'),
+        ("core", "0001_initial"),
+        ("deposits", "0001_initial"),
+        ("ingestion", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='deposit',
-            name='upload',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='deposits', to='ingestion.upload'),
+            model_name="deposit",
+            name="upload",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="deposits",
+                to="ingestion.upload",
+            ),
         ),
         migrations.AddField(
-            model_name='deposit',
-            name='waste_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='deposits', to='core.wastetype'),
+            model_name="deposit",
+            name="waste_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="deposits",
+                to="core.wastetype",
+            ),
         ),
     ]
