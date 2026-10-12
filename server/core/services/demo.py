@@ -4,6 +4,7 @@ from datetime import date
 from decimal import Decimal
 from zoneinfo import ZoneInfo
 
+from django.core.management import call_command
 from django.db import transaction
 from django.utils import timezone
 
@@ -36,6 +37,12 @@ def create_demo_account(
     bank_name: str | None = None,
 ) -> tuple[User, str]:
     waste_types = list(WasteType.objects.filter(is_active=True).order_by("code"))
+    if not waste_types:
+        try:
+            call_command("loaddata", "core/fixtures/waste_types.json")
+            waste_types = list(WasteType.objects.filter(is_active=True).order_by("code"))
+        except Exception:
+            pass
     if not waste_types:
         raise ValueError("No active waste types found. Load waste types fixture first.")
 
