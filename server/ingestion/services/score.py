@@ -28,6 +28,7 @@ def compute_row_score(
         weight_kg is None
         or "WEIGHT_UNPARSEABLE" in flag_codes
         or "WEIGHT_NONPOSITIVE" in flag_codes
+        or "WEIGHT_READER_MISMATCH" in flag_codes
     ):
         s_weight = 0.0
     elif "UNIT_ASSUMED_KG" in flag_codes:

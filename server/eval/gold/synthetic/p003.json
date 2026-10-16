@@ -1,0 +1,72 @@
+{
+  "page_id": "p003",
+  "image": "p003.jpg",
+  "split": "dev",
+  "provenance": "synthetic",
+  "writer": "member_c",
+  "rows": [
+    {
+      "tanggal": "2026-10-07",
+      "nasabah": "Nur",
+      "waste_type_code": "kardus",
+      "weight_kg": "5.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-07",
+      "nasabah": "Eko",
+      "waste_type_code": "koran",
+      "weight_kg": "3.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-07",
+      "nasabah": "Siti",
+      "waste_type_code": "pet",
+      "weight_kg": "2.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-08",
+      "nasabah": "Joko",
+      "waste_type_code": "besi",
+      "weight_kg": "15.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-08",
+      "nasabah": "Ambar",
+      "waste_type_code": "aluminium",
+      "weight_kg": "1.500",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-08",
+      "nasabah": "Danu",
+      "waste_type_code": "plastik_campur",
+      "weight_kg": "4.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-08",
+      "nasabah": "Sari",
+      "waste_type_code": "kertas",
+      "weight_kg": "3.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-09",
+      "nasabah": "Budi",
+      "waste_type_code": "kaca",
+      "weight_kg": "10.000",
+      "must_not_auto": false
+    },
+    {
+      "tanggal": "2026-10-09",
+      "nasabah": "Rina",
+      "waste_type_code": "kardus",
+      "weight_kg": "6.000",
+      "must_not_auto": false
+    }
+  ]
+}

@@ -27,6 +27,7 @@ from ingestion.services.preprocess import (
 from ingestion.services.prompts import PROMPT_VERSION, SCHEMA_VERSION
 from ingestion.services.score import compute_row_score, route_row
 from ingestion.services.strategies import (
+    HybridStrategy,
     OcrTextStrategy,
     StrategyOutput,
     TextStrategy,
@@ -57,6 +58,15 @@ def process_upload(upload_id: uuid.UUID | str) -> Upload:
             elif strategy_name == "ocr_text":
                 prep = prepare_image(image_data)
                 output = OcrTextStrategy().extract(
+                    ocr_jpeg=prep.ocr_jpeg,
+                    ocr_width=prep.ocr_width,
+                    ocr_height=prep.ocr_height,
+                    cache_image_id=cache_id,
+                )
+            elif strategy_name == "hybrid":
+                prep = prepare_image(image_data)
+                output = HybridStrategy().extract(
+                    llm_jpeg=prep.llm_jpeg,
                     ocr_jpeg=prep.ocr_jpeg,
                     ocr_width=prep.ocr_width,
                     ocr_height=prep.ocr_height,
@@ -204,7 +214,12 @@ def process_upload(upload_id: uuid.UUID | str) -> Upload:
                 ambiguity_margin=getattr(settings, "MATCH_AMBIGUITY_MARGIN", 0.05),
             )
 
-            initial_flags = weight_flags + date_flags + type_flags + name_flags
+            extra_flags = (
+                (output.extra_flags_by_row or {}).get(row_data.row_index, [])
+                if output.extra_flags_by_row
+                else []
+            )
+            initial_flags = weight_flags + date_flags + type_flags + name_flags + extra_flags
 
             row_intermediates.append(
                 {

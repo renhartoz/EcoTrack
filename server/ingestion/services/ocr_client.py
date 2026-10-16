@@ -1,5 +1,6 @@
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -44,6 +45,7 @@ class OcrResult:
     raw_response: dict[str, Any]
     ocr_width: int
     ocr_height: int
+    latency_ms: int = 0
 
 
 def compute_ocr_cache_key(
@@ -53,6 +55,14 @@ def compute_ocr_cache_key(
 ) -> str:
     raw_key = f"ocr:{cache_image_id}:{ocr_engine}:overlay=True:table=True:{strategy}"
     return hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
+
+
+def _extract_ocr_latency_ms(raw_response: dict[str, Any]) -> int:
+    val = raw_response.get("_latency_ms") or raw_response.get("ProcessingTimeInMilliseconds") or 0
+    try:
+        return int(float(val))
+    except Exception:
+        return 0
 
 
 def parse_ocr_response(
@@ -67,6 +77,8 @@ def parse_ocr_response(
         else:
             message = str(error_msg or "OCR processing failed")
         raise OcrApiError(message)
+
+    latency_ms = _extract_ocr_latency_ms(raw_response)
 
     if "lines" in raw_response:
         lines = [
@@ -95,6 +107,7 @@ def parse_ocr_response(
             raw_response=raw_response,
             ocr_width=ocr_width,
             ocr_height=ocr_height,
+            latency_ms=latency_ms,
         )
 
     parsed_results = raw_response.get("ParsedResults") or []
@@ -104,6 +117,7 @@ def parse_ocr_response(
             raw_response=raw_response,
             ocr_width=ocr_width,
             ocr_height=ocr_height,
+            latency_ms=latency_ms,
         )
 
     text_overlay = parsed_results[0].get("TextOverlay") or {}
@@ -173,6 +187,7 @@ def parse_ocr_response(
         raw_response=raw_response,
         ocr_width=ocr_width,
         ocr_height=ocr_height,
+        latency_ms=latency_ms,
     )
 
 
@@ -214,12 +229,14 @@ class OcrSpaceClient:
                 raw_response = json.load(f)
             return parse_ocr_response(raw_response, ocr_width, ocr_height)
 
-        if mode == "replay":
+        if mode in ("replay", "record"):
             cached = ProviderCache.objects.filter(key=cache_key, kind="ocr").first()
-            if not cached:
+            if cached:
+                return parse_ocr_response(cached.response, ocr_width, ocr_height)
+            if mode == "replay":
                 raise ReplayMissError("Replay miss for OCR cache key")
-            return parse_ocr_response(cached.response, ocr_width, ocr_height)
 
+        start_time = time.monotonic()
         try:
             url = "https://api.ocr.space/parse/image"
             data = {
@@ -237,6 +254,7 @@ class OcrSpaceClient:
             response = requests.post(url, data=data, files=files, timeout=self.timeout)
         except Exception as exc:
             raise OcrApiError("OCR request failed") from exc
+        ocr_latency_ms = int((time.monotonic() - start_time) * 1000)
 
         if response.status_code != 200:
             raise OcrApiError(f"OCR HTTP error status {response.status_code}")
@@ -246,10 +264,12 @@ class OcrSpaceClient:
         except Exception as exc:
             raise OcrApiError("Failed to parse OCR JSON response") from exc
 
+        stored_response = dict(raw_response)
+        stored_response["_latency_ms"] = ocr_latency_ms
         if mode == "record":
             ProviderCache.objects.update_or_create(
                 key=cache_key,
-                defaults={"kind": "ocr", "response": raw_response},
+                defaults={"kind": "ocr", "response": stored_response},
             )
 
-        return parse_ocr_response(raw_response, ocr_width, ocr_height)
+        return parse_ocr_response(stored_response, ocr_width, ocr_height)

@@ -277,11 +277,15 @@ class GroqExtractor:
         if mode == "fake":
             return self._handle_fake_execution(strategy)
 
-        if mode == "replay":
+        if mode in ("replay", "record"):
             cached = ProviderCache.objects.filter(key=cache_key, kind="llm").first()
-            if not cached:
+            if cached:
+                saved_latency = int(cached.response.get("_latency_ms", 0))
+                return self._parse_completion_response(
+                    cached.response, saved_latency, strategy=strategy
+                )
+            if mode == "replay":
                 raise ReplayMissError("Replay miss for LLM cache key")
-            return self._parse_completion_response(cached.response, 0, strategy=strategy)
 
         model_cls = get_strategy_wire_model(strategy)
         call_messages = (
@@ -316,9 +320,11 @@ class GroqExtractor:
                 ) from exc
 
         if mode == "record":
+            stored_response = dict(raw_response)
+            stored_response["_latency_ms"] = latency_ms
             ProviderCache.objects.update_or_create(
                 key=cache_key,
-                defaults={"kind": "llm", "response": raw_response},
+                defaults={"kind": "llm", "response": stored_response},
             )
 
         return result
